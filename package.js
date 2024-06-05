@@ -1,7 +1,7 @@
 Package.describe({
     name: 'pwix:tabular',
     version: '0.9.0-rc',
-    summary: 'Encapsulates aldeed:tabular package for pwi:core-app',
+    summary: 'Encapsulates aldeed:tabular package for pwix:core-app',
     git: 'https://github.com/trychlos/pwix-tabular.git',
     documentation: 'README.md'
 });
@@ -30,6 +30,7 @@ function configure( api ){
     _use( 'blaze-html-templates@2.0.0 || 3.0.0-alpha300.0', 'client' );
     _use( 'ecmascript' );
     _use( 'less@4.0.0', 'client' );
+    _use( 'tmeasday:check-npm-versions@1.0.2 || 2.0.0-beta.0', 'server' );
 }
 
 // NPM dependencies are checked in /src/server/js/check_npms.js
