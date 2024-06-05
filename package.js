@@ -1,0 +1,36 @@
+Package.describe({
+    name: 'pwix:tabular',
+    version: '0.9.0-rc',
+    summary: 'Encapsulates aldeed:tabular package for pwi:core-app',
+    git: 'https://github.com/trychlos/pwix-tabular.git',
+    documentation: 'README.md'
+});
+
+Package.onUse( function( api ){
+    configure( api );
+    api.mainModule( 'src/client/js/index.js', 'client' );
+    api.mainModule( 'src/server/js/index.js', 'server' );
+});
+
+Package.onTest( function( api ){
+    configure( api );
+    api.use( 'tinytest' );
+    api.use( 'pwix:tabular' );
+    api.mainModule( 'test/js/index.js' );
+});
+
+function configure( api ){
+    const _use = function(){
+        api.use( ...arguments );
+        api.imply( ...arguments );
+    };
+    api.versionsFrom([ '2.9.0', '3.0-rc.0' ]);
+    _use( 'aldeed:tabular@3.0.0-rc' );
+    _use( 'check' );
+    _use( 'blaze-html-templates@2.0.0 || 3.0.0-alpha300.0', 'client' );
+    _use( 'ecmascript' );
+    _use( 'less@4.0.0', 'client' );
+}
+
+// NPM dependencies are checked in /src/server/js/check_npms.js
+// See also https://guide.meteor.com/writing-atmosphere-packages.html#peer-npm-dependencies
