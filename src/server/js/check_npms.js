@@ -1,5 +1,5 @@
 /*
- * pwix:tabular/src/server/js/check_npms.js
+ * pwix:tabular-ext/src/server/js/check_npms.js
  */
 
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
@@ -10,5 +10,5 @@ if( false ){
 
 checkNpmVersions({
 },
-    'pwix:tabular'
+    'pwix:tabular-ext'
 );

@@ -1,5 +1,5 @@
 Package.describe({
-    name: 'pwix:tabular',
+    name: 'pwix:tabular-ext',
     version: '0.9.0-rc',
     summary: 'Encapsulates aldeed:tabular package for pwix:core-app',
     git: 'https://github.com/trychlos/pwix-tabular.git',
@@ -8,6 +8,9 @@ Package.describe({
 
 Package.onUse( function( api ){
     configure( api );
+    api.export([
+        'TabularExt'
+    ]);
     api.mainModule( 'src/client/js/index.js', 'client' );
     api.mainModule( 'src/server/js/index.js', 'server' );
 });
@@ -15,7 +18,7 @@ Package.onUse( function( api ){
 Package.onTest( function( api ){
     configure( api );
     api.use( 'tinytest' );
-    api.use( 'pwix:tabular' );
+    api.use( 'pwix:tabular-ext' );
     api.mainModule( 'test/js/index.js' );
 });
 
@@ -31,6 +34,7 @@ function configure( api ){
     _use( 'ecmascript' );
     _use( 'less@4.0.0', 'client' );
     _use( 'tmeasday:check-npm-versions@1.0.2 || 2.0.0-beta.0', 'server' );
+    api.addFiles( 'src/client/components/tabular_ext/tabular_ext.js', 'client' );
 }
 
 // NPM dependencies are checked in /src/server/js/check_npms.js

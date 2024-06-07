@@ -1,16 +1,20 @@
-# pwix:tabular
+# pwix:tabular-ext
 
 ## What is it ?
 
-A Meteor package which encapsulates `aldeed:tabular` to force the homogeneity of tabular presentations.
+A Meteor package which encapsulates `aldeed:tabular` to force the homogeneity of tabular presentations inside of our applications.
 
-## Features
+## Usage
+
+In our .html template, use tabular_ext instead of tabular, with just the same parameters.
 
 ## Configuration
 
 None at the moment.
 
 ## Provides
+
+The package provides a single `TabularExt` class which extends the `aldeed:tabular` `Tabular.Table` class.
 
 ### Methods
 
@@ -24,7 +28,7 @@ None at the moment.
 
 ## Translations
 
-New and updated translations are willingly accepted, and more than welcome. Just be kind enough to submit a PR on the [Github repository](https://github.com/trychlos/pwix-core-app/pulls).
+None at the moment.
 
 ## Cookies and comparable technologies
 

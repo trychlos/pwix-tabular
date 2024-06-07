@@ -1,4 +1,4 @@
-# pwix:tabular
+# pwix:tabular-ext
 
 ## ChangeLog
 

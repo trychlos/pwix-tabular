@@ -1,5 +1,5 @@
 /*
- * pwix:tabular/src/server/js/index.js
+ * pwix:tabular-ext/src/server/js/index.js
  */
 
 import '../../common/js/index.js';
