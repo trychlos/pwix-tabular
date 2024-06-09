@@ -6,21 +6,53 @@ import Tabular from 'meteor/aldeed:tabular';
 
 TabularExt = class TabularExt extends Tabular.Table {
 
-    // define the three columns for the edition buttons
-    static EditionButtons = [
-        { data: 'infoBtn',
-          orderable: false,
-          render: function(){ return '<button class="btn btn-sm ca-transparent" disabled><span class="fa-solid fa-fw fa-minus"></span></button>'; }
-        },
-        { data: 'editBtn',
-          orderable: false,
-          render: function(){ return '<button class="btn btn-sm btn-outline-primary" disabled><span class="fa-solid fa-fw fa-pen-to-square"></span></button>'; }
-        },
-        { data: 'deleteBtn',
-          orderable: false,
-          render: function(){ return '<button class="btn btn-sm btn-outline-primary" disabled><span class="fa-solid fa-fw fa-trash"></span></button>'; }
+    static _addDeleteButton( o ){
+        const haveButton = ( Object.keys( o.tabular_ext ) || [] ).includes( 'withDeleteButton' ) ? o.tabular_ext.withDeleteButton : true;
+        if( haveButton ){
+            o.columns.push({
+                orderable: false,
+                tmpl: Meteor.isClient && Template.delete_btn,
+                tmplContext( rowData ){
+                    return {
+                        item: rowData,
+                        parms: o
+                    };
+                }
+            });
         }
-    ];
+    }
+
+    static _addEditButton( o ){
+        const haveButton = ( Object.keys( o.tabular_ext ) || [] ).includes( 'withEditButton' ) ? o.tabular_ext.withEditButton : true;
+        if( haveButton ){
+            o.columns.push({
+                orderable: false,
+                tmpl: Meteor.isClient && Template.edit_btn,
+                tmplContext( rowData ){
+                    return {
+                        item: rowData,
+                        parms: o
+                    };
+                }
+            });
+        }
+    }
+
+    static _addInfoButton( o ){
+        const haveButton = ( Object.keys( o.tabular_ext ) || [] ).includes( 'withInfoButton' ) ? o.tabular_ext.withInfoButton : true;
+        if( haveButton ){
+            o.columns.push({
+                orderable: false,
+                tmpl: Meteor.isClient && Template.info_btn,
+                tmplContext( rowData ){
+                    return {
+                        item: rowData,
+                        parms: o
+                    };
+                }
+            });
+        }
+    }
 
     // a callback so that the three button headers are not displayed
     static _editionButtonsHeader( thead, data, start, end, display ){
@@ -41,10 +73,12 @@ TabularExt = class TabularExt extends Tabular.Table {
     rendered = false;
 
     constructor( o ){
-        // add the edition buttons
-        o.columns = o.columns.concat( TabularExt.EditionButtons );
+        // add edition buttons unless otherwise requested
+        TabularExt._addInfoButton( o );
+        TabularExt._addEditButton( o );
+        TabularExt._addDeleteButton( o );
         // have a special header for the edition buttons
-        o.headerCallback = TabularExt.HeaderCallback;
+        //o.headerCallback = TabularExt.HeaderCallback;
         super( o );
         return this;
     }

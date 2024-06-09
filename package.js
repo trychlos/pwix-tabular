@@ -1,6 +1,6 @@
 Package.describe({
     name: 'pwix:tabular-ext',
-    version: '0.9.0-rc',
+    version: '1.0.0-rc',
     summary: 'Encapsulates aldeed:tabular package for pwix:core-app',
     git: 'https://github.com/trychlos/pwix-tabular.git',
     documentation: 'README.md'
@@ -33,6 +33,9 @@ function configure( api ){
     _use( 'blaze-html-templates@2.0.0 || 3.0.0-alpha300.0', 'client' );
     _use( 'ecmascript' );
     _use( 'less@4.0.0', 'client' );
+    _use( 'pwix:i18n@1.5.0' );
+    _use( 'pwix:modal-info@1.4.0' );
+    _use( 'pwix:ui-fontawesome6@1.0.0', 'client' );
     _use( 'tmeasday:check-npm-versions@1.0.2 || 2.0.0-beta.0', 'server' );
     api.addFiles( 'src/client/components/tabular_ext/tabular_ext.js', 'client' );
 }
