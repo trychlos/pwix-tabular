@@ -13,14 +13,17 @@ import './edit_btn.html';
 Template.edit_btn.helpers({
     // whether the displayed row is deletable ? defaulting to true
     enabled(){
-        let enabled = ( Object.keys( this.parms.tabular_ext ) || [] ).includes( 'editButtonEnabled' ) ? this.parms.tabular_ext.editButtonEnabled : true;
-        enabled = ( typeof enabled === 'function' ) ? enabled( this.item ) : enabled;
-        return enabled ? '' : 'disabled';
+        return TabularExt.opt( 'editButtonEnabled', true, this.item ) ? '' : 'disabled';
     },
 
     // a default title
     title(){
-        let title = ( Object.keys( this.parms.tabular_ext ) || [] ).includes( 'editButtonTitle' ) ? this.parms.tabular_ext.editButtonTitle : pwixI18n.label( I18N, 'edit.btn_title', self.item._id );
-        return ( typeof title === 'function' ) ? title( this.item ) : title;
+        return TabularExt.opt( 'editButtonTitle', pwixI18n.label( I18N, 'edit.btn_title', this.item._id ), this.item );
+    }
+});
+
+Template.edit_btn.events({
+    'click .ext-edit-btn button'( event, instance ){
+        instance.$( event.currentTarget ).trigger( 'tabular-ext-edit-event', this );
     }
 });

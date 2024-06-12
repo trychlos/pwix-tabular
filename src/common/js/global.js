@@ -7,7 +7,7 @@ import Tabular from 'meteor/aldeed:tabular';
 TabularExt = class TabularExt extends Tabular.Table {
 
     static _addDeleteButton( o ){
-        const haveButton = ( Object.keys( o.tabular_ext ) || [] ).includes( 'withDeleteButton' ) ? o.tabular_ext.withDeleteButton : true;
+        const haveButton = TabularExt.opt( 'withDeleteButton', true );
         if( haveButton ){
             o.columns.push({
                 orderable: false,
@@ -23,7 +23,7 @@ TabularExt = class TabularExt extends Tabular.Table {
     }
 
     static _addEditButton( o ){
-        const haveButton = ( Object.keys( o.tabular_ext ) || [] ).includes( 'withEditButton' ) ? o.tabular_ext.withEditButton : true;
+        const haveButton = TabularExt.opt( 'withEditButton', true );
         if( haveButton ){
             o.columns.push({
                 orderable: false,
@@ -39,7 +39,7 @@ TabularExt = class TabularExt extends Tabular.Table {
     }
 
     static _addInfoButton( o ){
-        const haveButton = ( Object.keys( o.tabular_ext ) || [] ).includes( 'withInfoButton' ) ? o.tabular_ext.withInfoButton : true;
+        const haveButton = TabularExt.opt( 'withInfoButton', true );
         if( haveButton ){
             o.columns.push({
                 orderable: false,
@@ -54,31 +54,24 @@ TabularExt = class TabularExt extends Tabular.Table {
         }
     }
 
-    // a callback so that the three button headers are not displayed
-    static _editionButtonsHeader( thead, data, start, end, display ){
-        const $thead = $( thead );
-        const $children = $thead.find( 'th' );
-        for( let i=$children.length-3 ; i<$children.length ; ++i ){
-            const $th = $children[i];
-        }
-    }
-
-    static HeaderCallback( thead, data, start, end, display ){
-        if( TabularExt.rendered ){
-            TabularExt._editionButtonsHeader( thead, data, start, end, display );
-        }
+    // return the value, or the value returned by the function, or the default value
+    static opt( name, def, rowData ){
+        let result = ( Object.keys( TabularExt.#args.tabular_ext ) || [] ).includes( name ) ? TabularExt.#args.tabular_ext[name] : def;
+        return ( typeof result === 'function' ) ? result( rowData ) : result;
     }
 
     // whether the 'tabular_ext' template has been rendered
-    rendered = false;
+    static rendered = false;
+
+    // keep the constructor args
+    static #args = null;
 
     constructor( o ){
+        TabularExt.#args = o;
         // add edition buttons unless otherwise requested
         TabularExt._addInfoButton( o );
         TabularExt._addEditButton( o );
         TabularExt._addDeleteButton( o );
-        // have a special header for the edition buttons
-        //o.headerCallback = TabularExt.HeaderCallback;
         super( o );
         return this;
     }

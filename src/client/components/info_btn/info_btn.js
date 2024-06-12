@@ -10,26 +10,25 @@ import { pwixI18n } from 'meteor/pwix:i18n';
 
 import './info_btn.html';
 
-Template.info_btn.onRendered( function(){
-});
-
 Template.info_btn.helpers({
 
     // miButton parameters
+    //  keep 'enabled' as a function to be dynamically callable by ModalInfo
     parmsModalInfo(){
-        const self = this;
-        const enabled = ( Object.keys( self.parms.tabular_ext ) || [] ).includes( 'infoButtonEnabled' ) ? self.parms.tabular_ext.infoButtonEnabled : true;
-        let title = ( Object.keys( self.parms.tabular_ext ) || [] ).includes( 'infoButtonTitle' ) ? self.parms.tabular_ext.infoButtonTitle : pwixI18n.label( I18N, 'info.btn_title', self.item._id );
-        title = ( typeof title === 'function' ) ? title( self.item ) : title;
         return {
-            titleButton: title,
+            titleButton: TabularExt.opt( 'infoButtonTitle', pwixI18n.label( I18N, 'info.btn_title', this.item._id ), this.item ),
             titleDialog: pwixI18n.label( I18N, 'modalinfo.dialog_title' ),
-            //mdClassesContent: Meteor.APP.Pages.current.page().get( 'theme' ),
-            name: self.item.emails.length ? self.item.emails[0].address : null,
-            object: self.item,
+            mdClassesContent: TabularExt.opt( 'dialogClasses', '', this.item ),
+            object: this.item,
             classButton: 'btn-sm btn-outline-primary',
             stampFormat: '%Y-%m-%d %H:%M:%S',
-            enabled: enabled
+            enabled: ( Object.keys( this.parms.tabular_ext ) || [] ).includes( 'infoButtonEnabled' ) ? this.parms.tabular_ext.infoButtonEnabled : true
         }
     },
+});
+
+Template.info_btn.events({
+    'click .ext-info-btn button'( event, instance ){
+        instance.$( event.currentTarget ).trigger( 'tabular-ext-info-event', this.item );
+    }
 });

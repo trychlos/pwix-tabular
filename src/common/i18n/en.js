@@ -7,7 +7,9 @@ TabularExt.i18n = {
     ...{
         en: {
             delete: {
-                btn_title: 'Delete the "%s" object'
+                btn_title: 'Delete the "%s" object',
+                confirm_content: 'You are about to delete the "%s" object.<br />Are you sure ?',
+                confirm_title: 'Deleting an object'
             },
             edit: {
                 btn_title: 'Edit the "%s" object'
