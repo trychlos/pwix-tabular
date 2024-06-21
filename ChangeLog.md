@@ -1,12 +1,12 @@
-# pwix:tabular-ext
+# pwix:tabular
 
 ## ChangeLog
 
 ### 1.0.0-rc
 
-Release date: 
+Release date:
 
-- 
+- Initial release
 
 ---
 P. Wieser

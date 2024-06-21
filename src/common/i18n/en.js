@@ -1,9 +1,9 @@
 /*
- * pwix:tabular-ext/src/common/i18n/en.js
+ * pwix:tabular/src/common/i18n/en.js
  */
 
-TabularExt.i18n = {
-    ...TabularExt.i18n,
+Tabular.i18n = {
+    ...Tabular.i18n,
     ...{
         en: {
             delete: {

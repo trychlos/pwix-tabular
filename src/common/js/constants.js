@@ -1,9 +1,9 @@
 /*
- * pwix:tabular-ext/src/common/js/constants.js
+ * pwix:tabular/src/common/js/constants.js
  */
 
-TabularExt.C = {
+Tabular.C = {
 };
 
 // non exported internal constant as i18n namespace
-I18N = 'pwix:tabular-ext:i18n'
+I18N = 'pwix:tabular:i18n'

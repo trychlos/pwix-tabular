@@ -1,22 +1,46 @@
-# pwix:tabular-ext
+# pwix:tabular
 
 ## What is it ?
 
 A Meteor package which encapsulates `aldeed:tabular` to force the homogeneity of tabular presentations inside of our applications.
 
-In particular, this package let the caller add (or not) three information, edit and delete buttons at the end right of each row.
+In particular, this package let the caller add (or not) three `Information`, `Edit` and `Delete` buttons at the end right of each row.
+
+## Installation
+
+This Meteor package is installable with the usual command:
+
+```sh
+    meteor add pwix:tabular
+```
 
 ## Usage
 
-In our .html template, use tabular_ext instead of tabular, with just the same parameters.
+In your .html template, use `tabular_ext` template instead of `tabular`, with just the same parameters.
 
 ## Provides
 
-The package provides a single `TabularExt` class which extends the `aldeed:tabular` `Tabular.Table` class.
+### `Tabular`
 
-The constructor accepts following additional parameters, all inside a `tabular_ext` object:
+The exported `Tabular` global object provides following items:
 
-- `tabular_ext.deleteConfirmationText`
+#### Functions
+
+##### `Tabular.i18n.namespace()`
+
+    Returns the i18n namespace used by the package. Used to add translations at runtime.
+
+    Available both on the client and the server.
+
+#### Classes
+
+##### `Tabular.Table`
+
+This package `Tabular.Table` class extends the `aldeed:tabular` `Tabular.Table` class.
+
+The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus following additional parameters, all inside a `tabular` object:
+
+- `tabular.deleteConfirmationText`
 
     The text to be displayed when requiring the user confirmation, as a HTML string.
 
@@ -24,7 +48,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to 'Deleting an object'.
 
-- `tabular_ext.deleteConfirmationTitle`
+- `tabular.deleteConfirmationTitle`
 
     The title of the confirmation modal dialog.
 
@@ -32,7 +56,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to 'You are about to delete the "%s" object. Are you sure ?'.
 
-- `tabular_ext.deleteButtonEnabled`
+- `tabular.deleteButtonEnabled`
 
     Whether the 'Delete' button must be enabled, with a truethy or falsy value.
 
@@ -40,7 +64,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to `true` (enabled).
 
-- `tabular_ext.deleteButtonTitle`
+- `tabular.deleteButtonTitle`
 
     The title of the 'Delete' button.
 
@@ -48,7 +72,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to 'Delete the "%s" object'.
 
-- `tabular_ext.dialogClasses`
+- `tabular.dialogClasses`
 
     The classes to be added to the displayed dialogs, as a string.
 
@@ -56,7 +80,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to nothing.
 
-- `tabular_ext.editButtonEnabled`
+- `tabular.editButtonEnabled`
 
     Whether the 'Edit' button must be enabled, with a truethy or falsy value.
 
@@ -64,7 +88,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to `true` (enabled).
 
-- `tabular_ext.editButtonTitle`
+- `tabular.editButtonTitle`
 
     The title of the 'Edit' button.
 
@@ -72,7 +96,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to 'Edit the "%s" object'.
 
-- `tabular_ext.infoButtonEnabled`
+- `tabular.infoButtonEnabled`
 
     Whether the 'Information' button must be enabled, with a truethy or falsy value.
 
@@ -80,7 +104,7 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to `true` (enabled).
 
-- `tabular_ext.infoButtonTitle`
+- `tabular.infoButtonTitle`
 
     The title of the 'Information' button.
 
@@ -88,25 +112,57 @@ The constructor accepts following additional parameters, all inside a `tabular_e
 
     Defaults to 'Informations about the "%s" object'.
 
-- `tabular_ext.wantDeleteConfirmation`
+- `tabular.wantDeleteConfirmation`
 
-    Whether the `tabular-ext-delete-event` event must be triggered after a user confirmation (if `true`) or as soon as the user has clicked on the `Delete` button (if `false`).
+    Whether the `tabular-delete-event` event must be triggered after a user confirmation (if `true`) or as soon as the user has clicked on the `Delete` button (if `false`).
 
     Defaults to `true` (after user confirmation).
 
-- `tabular_ext.withDeleteButton`
+- `tabular.withDeleteButton`
 
     whether to display a 'Delete' button on the right, defaulting to true
 
-- `tabular_ext.withEditButton`
+- `tabular.withEditButton`
 
     whether to display an 'Edition' button on the right, defaulting to true
 
-- `tabular_ext.withInfoButton`
+- `tabular.withInfoButton`
 
     whether to display an 'Information' button on the right, defaulting to true
 
 As its `aldeed:tabular` ancestor, this package requires that the constructor be called in same terms, both in client and server side.
+
+## NPM peer dependencies
+
+Starting with v 1.0.0, and in accordance with advices from [the Meteor Guide](https://guide.meteor.com/writing-atmosphere-packages.html#peer-npm-dependencies), we no more hardcode NPM dependencies in the `Npm.depends` clause of the `package.js`.
+
+Instead we check npm versions of installed packages at runtime, on server startup, in development environment.
+
+Dependencies as of v 0.3.0:
+
+```js
+    '@popperjs/core': '^2.11.6',
+    'bootstrap': '^5.2.1',
+    'lodash': '^4.17.0'
+```
+
+Each of these dependencies should be installed at application level:
+
+```sh
+    meteor npm install <package> --save
+```
+
+## Translations
+
+New and updated translations are willingly accepted, and more than welcome. Just be kind enough to submit a PR on the [Github repository](https://github.com/trychlos/pwix-tabular/pulls).
+
+## Cookies and comparable technologies
+
+None at the moment.
+
+## Issues & help
+
+In case of support or error, please report your issue request to our [Issues tracker](https://github.com/trychlos/pwix-tabular/issues).
 
 ---
 P. Wieser

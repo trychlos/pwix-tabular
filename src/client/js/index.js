@@ -1,5 +1,5 @@
 /*
- * pwix:tabular-ext/src/client/js/index.js
+ * pwix:tabular/src/client/js/index.js
  */
 
 // mutualize the datatable imports
