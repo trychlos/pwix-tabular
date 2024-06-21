@@ -1,6 +1,6 @@
 Package.describe({
     name: 'pwix:tabular',
-    version: '1.0.0-rc',
+    version: '1.0.0',
     summary: 'Encapsulates aldeed:tabular package for pwix:core-app',
     git: 'https://github.com/trychlos/pwix-tabular.git',
     documentation: 'README.md'
