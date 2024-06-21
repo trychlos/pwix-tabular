@@ -1,4 +1,4 @@
-# pwix:core-app - TODO
+# pwix:tabular - TODO
 
 ## Summary
 

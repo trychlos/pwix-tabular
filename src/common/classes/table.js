@@ -21,6 +21,7 @@ export class Table extends Tabular.Table {
     _addDeleteButton( o ){
         const self = this;
         const haveButton = this.opt( 'withDeleteButton', true );
+        //console.debug( 'deleteButton', this.name, haveButton );
         if( haveButton ){
             o.columns.push({
                 orderable: false,
@@ -38,6 +39,7 @@ export class Table extends Tabular.Table {
     _addEditButton( o ){
         const self = this;
         const haveButton = this.opt( 'withEditButton', true );
+        //console.debug( 'editButton', this.name, haveButton );
         if( haveButton ){
             o.columns.push({
                 orderable: false,
@@ -55,6 +57,7 @@ export class Table extends Tabular.Table {
     _addInfoButton( o ){
         const self = this;
         const haveButton = this.opt( 'withInfoButton', true );
+        //console.debug( 'infoButton', this.name, haveButton );
         if( haveButton ){
             o.columns.push({
                 orderable: false,

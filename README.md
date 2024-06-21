@@ -26,11 +26,15 @@ The exported `Tabular` global object provides following items:
 
 #### Functions
 
+##### `Tabular.configure( o<Object> )`
+
+See [below](#configuration)
+
 ##### `Tabular.i18n.namespace()`
 
-    Returns the i18n namespace used by the package. Used to add translations at runtime.
+Returns the i18n namespace used by the package. Used to add translations at runtime.
 
-    Available both on the client and the server.
+Available both on the client and the server.
 
 #### Classes
 
@@ -131,6 +135,30 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
     whether to display an 'Information' button on the right, defaulting to true
 
 As its `aldeed:tabular` ancestor, this package requires that the constructor be called in same terms, both in client and server side.
+
+## Configuration
+
+The package's behavior can be configured through a call to the `Tabular.configure()` method, with just a single javascript object argument, which itself should only contains the options you want override.
+
+Known configuration options are:
+
+- `verbosity`
+
+    Define the expected verbosity level.
+
+    The accepted value can be any or-ed combination of following:
+
+    - `Tabular.C.Verbose.NONE`
+
+        Do not display any trace log to the console
+
+    - `Tabular.C.Verbose.CONFIGURE`
+
+        Trace `Tabular.configure()` calls and their result
+
+Please note that `Tabular.configure()` method should be called in the same terms both in client and server sides.
+
+Remind too that Meteor packages are instanciated at application level. They are so only configurable once, or, in other words, only one instance has to be or can be configured. Addtionnal calls to `Tabular.configure()` will just override the previous one. You have been warned: **only the application should configure a package**.
 
 ## NPM peer dependencies
 
