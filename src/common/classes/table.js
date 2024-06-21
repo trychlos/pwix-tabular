@@ -85,7 +85,7 @@ export class Table extends Tabular.Table {
 
         // track the 'rendered' var
         Tracker.autorun(() => {
-            console.debug( 'Tabular:rendered', this.name, this.rendered());
+            console.debug( 'pwix:tabular rendered', this.name, this.rendered());
         });
 
         return this;

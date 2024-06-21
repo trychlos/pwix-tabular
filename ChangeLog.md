@@ -10,9 +10,9 @@
 
 ### 1.0.0
 
-Release date:
+    Release date: 2024- 6-21
 
-- Initial release
+    - Initial release
 
 ---
 P. Wieser
