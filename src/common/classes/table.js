@@ -20,56 +20,59 @@ export class Table extends Tabular.Table {
 
     _addDeleteButton( o ){
         const self = this;
-        const haveButton = this.opt( 'withDeleteButton', true );
-        //console.debug( 'deleteButton', this.name, haveButton );
-        if( haveButton ){
-            o.columns.push({
-                orderable: false,
-                tmpl: Meteor.isClient && Template.delete_btn,
-                tmplContext( rowData ){
-                    return {
-                        item: rowData,
-                        table: self
-                    };
-                }
-            });
-        }
+        Tracker.autorun(() => {
+            const haveButton = self.opt( 'withDeleteButton', true );
+            if( haveButton ){
+                o.columns.push({
+                    orderable: false,
+                    tmpl: Meteor.isClient && Template.delete_btn,
+                    tmplContext( rowData ){
+                        return {
+                            item: rowData,
+                            table: self
+                        };
+                    }
+                });
+            }
+        });
     }
 
     _addEditButton( o ){
         const self = this;
-        const haveButton = this.opt( 'withEditButton', true );
-        //console.debug( 'editButton', this.name, haveButton );
-        if( haveButton ){
-            o.columns.push({
-                orderable: false,
-                tmpl: Meteor.isClient && Template.edit_btn,
-                tmplContext( rowData ){
-                    return {
-                        item: rowData,
-                        table: self
-                    };
-                }
-            });
-        }
+        Tracker.autorun(() => {
+            const haveButton = self.opt( 'withEditButton', true );
+            if( haveButton ){
+                o.columns.push({
+                    orderable: false,
+                    tmpl: Meteor.isClient && Template.edit_btn,
+                    tmplContext( rowData ){
+                        return {
+                            item: rowData,
+                            table: self
+                        };
+                    }
+                });
+            }
+        });
     }
 
     _addInfoButton( o ){
         const self = this;
-        const haveButton = this.opt( 'withInfoButton', true );
-        //console.debug( 'infoButton', this.name, haveButton );
-        if( haveButton ){
-            o.columns.push({
-                orderable: false,
-                tmpl: Meteor.isClient && Template.info_btn,
-                tmplContext( rowData ){
-                    return {
-                        item: rowData,
-                        table: self
-                    };
-                }
-            });
-        }
+        Tracker.autorun(() => {
+            const haveButton = self.opt( 'withInfoButton', true );
+            if( haveButton ){
+                o.columns.push({
+                    orderable: false,
+                    tmpl: Meteor.isClient && Template.info_btn,
+                    tmplContext( rowData ){
+                        return {
+                            item: rowData,
+                            table: self
+                        };
+                    }
+                });
+            }
+        });
     }
 
     constructor( o ){
@@ -83,7 +86,7 @@ export class Table extends Tabular.Table {
         this._addEditButton( o );
         this._addDeleteButton( o );
 
-        // track the 'rendered' var
+        // track the 'rendered' state
         Tracker.autorun(() => {
             console.debug( 'pwix:tabular rendered', this.name, this.rendered());
         });

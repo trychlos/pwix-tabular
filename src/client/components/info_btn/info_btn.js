@@ -25,6 +25,11 @@ Template.info_btn.helpers({
             enabled: this.table.arg( 'infoButtonEnabled' ) || true
         }
     },
+
+    // whether to show the disabled button ?
+    show(){
+        return this.table.opt( 'infoButtonEnabled', true, this.item ) || !Tabular._conf.hideDisabled;
+    }
 });
 
 Template.info_btn.events({

@@ -7,6 +7,7 @@
     Release date:
 
     - Define configure() new function, bumping minor candidate version number
+    - Introduce hideDisabled configuration
 
 ### 1.0.0
 

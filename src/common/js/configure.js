@@ -7,6 +7,7 @@ import _ from 'lodash';
 Tabular._conf = {};
 
 Tabular._defaults = {
+    hideDisabled: true,
     verbosity: Tabular.C.Verbose.CONFIGURE
 };
 

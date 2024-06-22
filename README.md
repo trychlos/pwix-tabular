@@ -48,15 +48,11 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     The text to be displayed when requiring the user confirmation, as a HTML string.
 
-    Can be a function which will be called with the row object, and must return the text.
-
     Defaults to 'Deleting an object'.
 
 - `tabular.deleteConfirmationTitle`
 
     The title of the confirmation modal dialog.
-
-    Can be a function which will be called with the row object, and must return the title.
 
     Defaults to 'You are about to delete the "%s" object. Are you sure ?'.
 
@@ -64,15 +60,11 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     Whether the 'Delete' button must be enabled, with a truethy or falsy value.
 
-    Can be a function which will be called with the row object, and must return true|false to enable the 'Delete' button.
-
     Defaults to `true` (enabled).
 
 - `tabular.deleteButtonTitle`
 
     The title of the 'Delete' button.
-
-    Can be a function which will be called with the row object, and must return the title to be attached to the 'Delete' button.
 
     Defaults to 'Delete the "%s" object'.
 
@@ -80,15 +72,11 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     The classes to be added to the displayed dialogs, as a string.
 
-    Can be a function which will be called with the row object, and must return the classes string.
-
     Defaults to nothing.
 
 - `tabular.editButtonEnabled`
 
     Whether the 'Edit' button must be enabled, with a truethy or falsy value.
-
-    Can be a function which will be called with the row object, and must return true|false to enable the 'Edit' button.
 
     Defaults to `true` (enabled).
 
@@ -96,23 +84,17 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     The title of the 'Edit' button.
 
-    Can be a function which will be called with the row object, and must return the title to be attached to the 'Edit' button.
-
     Defaults to 'Edit the "%s" object'.
 
 - `tabular.infoButtonEnabled`
 
     Whether the 'Information' button must be enabled, with a truethy or falsy value.
 
-    Can be a function which will be called with the row object, and must return true|false to enable the 'Information' button.
-
     Defaults to `true` (enabled).
 
 - `tabular.infoButtonTitle`
 
     The title of the 'Information' button.
-
-    Can be a function which will be called with the row object, and must return the title to be attached to the 'Information' button.
 
     Defaults to 'Informations about the "%s" object'.
 
@@ -124,23 +106,33 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
 - `tabular.withDeleteButton`
 
-    whether to display a 'Delete' button on the right, defaulting to true
+    Whether to display a 'Delete' button on the right, defaulting to `true`
 
 - `tabular.withEditButton`
 
-    whether to display an 'Edition' button on the right, defaulting to true
+    Whether to display an 'Edition' button on the right, defaulting to `true`
 
 - `tabular.withInfoButton`
 
-    whether to display an 'Information' button on the right, defaulting to true
+    Whether to display an 'Information' button on the right, defaulting to `true`
 
-As its `aldeed:tabular` ancestor, this package requires that the constructor be called in same terms, both in client and server side.
+All parameters can be provided as values, or as functions. The provided  function will be called with the row object, and must return the desired value.
+
+Please note that buttons are managed inside of autorun functions. So the package will be reactive to the changes if you provide here reactive data sources.
+
+As its `aldeed:tabular` ancestor, this package requires that the `Table` constructor be called in same terms, both in client and server side.
 
 ## Configuration
 
 The package's behavior can be configured through a call to the `Tabular.configure()` method, with just a single javascript object argument, which itself should only contains the options you want override.
 
 Known configuration options are:
+
+- `hideDisabled`
+
+    Whether to hide disabled buttons instead of displaying the disabled state.
+
+    Defaults to `true`: disabled buttons are hidden.
 
 - `verbosity`
 

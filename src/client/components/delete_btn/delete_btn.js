@@ -11,8 +11,13 @@ import { Bootbox } from 'meteor/pwix:bootbox';
 import './delete_btn.html';
 
 Template.delete_btn.helpers({
+    // whether we show the disabled button
+    enabledClass(){
+        return this.table.opt( 'deleteButtonEnabled', true, this.item ) || !Tabular._conf.hideDisabled ? '' : 'ui-transparent';
+    },
+
     // whether the displayed row is deletable ? defaulting to true
-    enabled(){
+    enabledState(){
         return this.table.opt( 'deleteButtonEnabled', true, this.item ) ? '' : 'disabled';
     },
 

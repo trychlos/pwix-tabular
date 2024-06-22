@@ -11,8 +11,13 @@ import { pwixI18n } from 'meteor/pwix:i18n';
 import './edit_btn.html';
 
 Template.edit_btn.helpers({
+    // whether to show the disabled button ?
+    enabledClass(){
+        return this.table.opt( 'editButtonEnabled', true, this.item ) || !Tabular._conf.hideDisabled ? '' : 'ui-transparent';
+    },
+
     // whether the displayed row is deletable ? defaulting to true
-    enabled(){
+    enabledState(){
         return this.table.opt( 'editButtonEnabled', true, this.item ) ? '' : 'disabled';
     },
 

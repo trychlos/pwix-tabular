@@ -1,7 +1,9 @@
 <template name="info_btn">
     <div class="tabular-info-btn">
 
-        {{> miButton (parmsModalInfo) }}
+        {{#if show }}
+            {{> miButton (parmsModalInfo) }}
+        {{/if}}
 
     </div>
 </template>
