@@ -8,6 +8,7 @@
 
     - Define configure() new function, bumping minor candidate version number
     - Introduce hideDisabled configuration
+    - Introduce stylesheet
 
 ### 1.0.0
 
