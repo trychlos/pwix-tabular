@@ -1,7 +1,7 @@
 <template name="edit_btn">
-    <div class="tabular-edit-btn">
+    <div class="tabular-edit-btn {{ enabledClass }}">
 
-        <button class="btn btn-sm btn-outline-primary {{ enabledClass }}" {{ enabledState }} title="{{ title }}">
+        <button class="btn btn-sm btn-outline-primary" {{ enabledState }} title="{{ title }}">
             <span class="fa-solid fa-fw fa-pen-to-square"></span>
         </button>
 

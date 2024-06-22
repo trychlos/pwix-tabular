@@ -18,52 +18,14 @@ export class Table extends Tabular.Table {
 
     // private methods
 
-    _addDeleteButton( o ){
+    _addButtonsColumn( o ){
         const self = this;
         Tracker.autorun(() => {
-            const haveButton = self.opt( 'withDeleteButton', true );
-            if( haveButton ){
+            const haveAnyButton = self.opt( 'withDeleteButton', true ) || self.opt( 'withEditButton', true ) || self.opt( 'withInfoButton', true );
+            if( haveAnyButton ){
                 o.columns.push({
                     orderable: false,
-                    tmpl: Meteor.isClient && Template.delete_btn,
-                    tmplContext( rowData ){
-                        return {
-                            item: rowData,
-                            table: self
-                        };
-                    }
-                });
-            }
-        });
-    }
-
-    _addEditButton( o ){
-        const self = this;
-        Tracker.autorun(() => {
-            const haveButton = self.opt( 'withEditButton', true );
-            if( haveButton ){
-                o.columns.push({
-                    orderable: false,
-                    tmpl: Meteor.isClient && Template.edit_btn,
-                    tmplContext( rowData ){
-                        return {
-                            item: rowData,
-                            table: self
-                        };
-                    }
-                });
-            }
-        });
-    }
-
-    _addInfoButton( o ){
-        const self = this;
-        Tracker.autorun(() => {
-            const haveButton = self.opt( 'withInfoButton', true );
-            if( haveButton ){
-                o.columns.push({
-                    orderable: false,
-                    tmpl: Meteor.isClient && Template.info_btn,
+                    tmpl: Meteor.isClient && Template.dt_buttons,
                     tmplContext( rowData ){
                         return {
                             item: rowData,
@@ -82,9 +44,7 @@ export class Table extends Tabular.Table {
         this.#args = o;
 
         // add edition buttons unless otherwise requested
-        this._addInfoButton( o );
-        this._addEditButton( o );
-        this._addDeleteButton( o );
+        this._addButtonsColumn( o );
 
         // track the 'rendered' state
         Tracker.autorun(() => {

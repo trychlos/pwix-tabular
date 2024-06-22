@@ -1,7 +1,7 @@
 <template name="delete_btn">
-    <div class="tabular-delete-btn">
+    <div class="tabular-delete-btn {{ enabledClass }}">
 
-        <button class="btn btn-sm btn-outline-primary {{ enabledClass }}" {{ enabledState }} title="{{ title }}">
+        <button class="btn btn-sm btn-outline-primary" {{ enabledState }} title="{{ title }}">
             <span class="fa-solid fa-fw fa-trash"></span>
         </button>
 

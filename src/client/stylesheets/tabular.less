@@ -3,5 +3,12 @@
  */
 
 .TabularExt {
-
+    .tabular-dt-buttons {
+        display: flex;
+        // a bad hack to get a column the ad-hoc size for three buttons (which happens to be rather 130px)
+        width: 66px;
+    }
+    .tabular-dt-buttons div:not( :first-child ){
+        margin-left: 0.25em;
+    }
 }
