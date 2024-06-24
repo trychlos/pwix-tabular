@@ -9,6 +9,8 @@
     - Define configure() new function, bumping minor candidate version number
     - Introduce hideDisabled configuration
     - Introduce stylesheet
+    - Takes care of forcing the table to expand even if initialized while  hidden
+    - Have the three buttons in a single column
 
 ### 1.0.0
 
