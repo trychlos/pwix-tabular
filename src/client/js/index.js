@@ -3,6 +3,7 @@
  */
 
 // import here templates addressed by the  Tabular class
+import '../components/dt_checkbox/dt_checkbox.js';
 import '../components/dt_buttons/dt_buttons.js';
 
 // before importing the class itself

@@ -18,6 +18,7 @@ export class Table extends Tabular.Table {
 
     // private methods
 
+    // add the info/edit/delete buttons at the end of each row
     _addButtonsColumn( o ){
         const self = this;
         Tracker.autorun(() => {
@@ -37,6 +38,16 @@ export class Table extends Tabular.Table {
         });
     }
 
+    // install a checbox to display Boolean values unless a teplate be already provided
+    _setCheckboxes( o ){
+        const self = this;
+        o.columns.forEach(( it ) => {
+            if( it.tmpl === 'dt_checkbox' ){
+                it.tmpl = Meteor.isClient && Template.dt_checkbox;
+            }
+        });
+    }
+
     constructor( o ){
         super( ...arguments );
 
@@ -45,6 +56,9 @@ export class Table extends Tabular.Table {
 
         // add edition buttons unless otherwise requested
         this._addButtonsColumn( o );
+
+        // use a checkbox to display boolean values
+        this._setCheckboxes( o );
 
         // track the 'rendered' state
         Tracker.autorun(() => {
