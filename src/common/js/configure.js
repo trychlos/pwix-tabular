@@ -4,7 +4,11 @@
 
 import _ from 'lodash';
 
-Tabular._conf = {};
+import { ReactiveVar } from 'meteor/reactive-var';
+
+let _conf = {};
+
+Tabular._conf = new ReactiveVar( _conf );
 
 Tabular._defaults = {
     hideDisabled: true,
@@ -19,14 +23,16 @@ Tabular._defaults = {
  */
 Tabular.configure = function( o ){
     if( o && _.isObject( o )){
-        _.merge( Tabular._conf, Tabular._defaults, o );
+        _.merge( _conf, Tabular._defaults, o );
+        Tabular._conf.set( _conf );
         // be verbose if asked for
         if( Tabular._conf.verbosity & Tabular.C.Verbose.CONFIGURE ){
             console.log( 'pwix:forms configure() with', o );
         }
     }
     // also acts as a getter
-    return Tabular._conf;
+    return Tabular._conf.get();
 }
 
-_.merge( Tabular._conf, Tabular._defaults );
+_.merge( _conf, Tabular._defaults );
+Tabular._conf.set( _conf );

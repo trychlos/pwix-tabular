@@ -7,6 +7,7 @@
     Release date:
 
     - Let the caller install a checkbox template on boolean values, bumping minor candidate version number
+    - Tabular.configure() becomes a reactive data source
 
 ### 1.1.0
 
