@@ -21,26 +21,26 @@ Template.dt_checkbox.helpers({
 
     // whether the dt_checkbox is disabled ?
     enabled(){
-        let enabled = this.enabled;
-        if( enabled instanceof ReactiveVar ){
-            enabled = enabled.get();
-        } else if( typeof enabled === 'function' ){
-            enabled = enabled( this );
+        let status = this.enabled;
+        if( status instanceof ReactiveVar ){
+            status = status.get();
+        } else if( typeof status === 'function' ){
+            status = status( this );
         }
-        return enabled ? '' : 'disabled' ;
+        return status ? '' : 'disabled' ;
     }
 });
 
 Template.dt_checkbox.events({
     'click .tabular-checkbox input'( event, instance ){
         // whether the checkbox is readonly ?
-        let readonly = this.readonly;
-        if( readonly instanceof ReactiveVar ){
-            readonly = readonly.get();
-        } else if( typeof readonly === 'function' ){
-            readonly = readonly( this );
+        let status = this.readonly;
+        if( status instanceof ReactiveVar ){
+            status = status.get();
+        } else if( typeof status === 'function' ){
+            status = status( this );
         }
-        if( readonly ){
+        if( status ){
             return false;
         }
     }
