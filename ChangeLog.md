@@ -8,6 +8,8 @@
 
     - Let the caller install a checkbox template on boolean values, bumping minor candidate version number
     - Tabular.configure() becomes a reactive data source
+    - Buttons now accept a function to return the object to be used
+    - Make sure all function are managed as async functions
 
 ### 1.1.0
 

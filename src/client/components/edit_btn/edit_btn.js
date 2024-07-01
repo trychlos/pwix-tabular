@@ -7,28 +7,60 @@
  */
 
 import { pwixI18n } from 'meteor/pwix:i18n';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 import './edit_btn.html';
+
+Template.edit_btn.onCreated( function(){
+    const self = this;
+
+    self.PCK = {
+        enabled: new ReactiveVar( true ),
+        title: new ReactiveVar( '' )
+    };
+});
+
+Template.edit_btn.onRendered( function(){
+    const self = this;
+
+    // get asynchronously the enabled state
+    self.autorun(() => {
+        const dc = Template.currentData();
+        if( dc.item && dc.table ){
+            dc.table.opt( 'editButtonEnabled', true, dc.item ).then(( res ) => { self.PCK.enabled.set( res ); });
+        }
+    });
+
+    // get asynchronously the button title
+    self.autorun(() => {
+        const dc = Template.currentData();
+        if( dc.item && dc.table ){
+            dc.table.opt( 'editButtonTitle', pwixI18n.label( I18N, 'edit.btn_title', dc.item._id ), dc.item ).then(( res ) => { self.PCK.title.set( res ); });
+        }
+    });
+});
 
 Template.edit_btn.helpers({
     // whether to show the disabled button ?
     enabledClass(){
-        return this.table.opt( 'editButtonEnabled', true, this.item ) || !Tabular.configure().hideDisabled ? '' : 'ui-transparent';
+        return Template.instance().PCK.enabled.get() || !Tabular.configure().hideDisabled ? '' : 'ui-transparent';
     },
 
     // whether the displayed row is deletable ? defaulting to true
     enabledState(){
-        return this.table.opt( 'editButtonEnabled', true, this.item ) ? '' : 'disabled';
+        return Template.instance().PCK.enabled.get() ? '' : 'disabled';
     },
 
     // a default title
     title(){
-        return this.table.opt( 'editButtonTitle', pwixI18n.label( I18N, 'edit.btn_title', this.item._id ), this.item );
+        return Template.instance().PCK.title.get();
     }
 });
 
 Template.edit_btn.events({
-    'click .tabular-edit-btn button'( event, instance ){
+    async 'click .tabular-edit-btn button'( event, instance ){
+        const item = await this.table.opt( 'editItem', this.item, this.item );
+        this.item = item;
         instance.$( event.currentTarget ).trigger( 'tabular-edit-event', this );
     }
 });

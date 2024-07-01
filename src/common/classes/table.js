@@ -86,9 +86,9 @@ export class Table extends Tabular.Table {
      * @param {Object} rowData
      * @returns the value, or the value returned by the function, or the default value
      */
-    opt( name, def, rowData ){
+    async opt( name, def, rowData ){
         let res = this.arg( name );
-        res = res ? (( typeof res === 'function' ) ? res( rowData ) : res ) : def;
+        res = res ? (( typeof res === 'function' ) ? await res( rowData ) : res ) : def;
         return res;
     }
 

@@ -68,6 +68,12 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     Defaults to 'Delete the "%s" object'.
 
+- `tabular.deleteItem`
+
+    The object to be deleted.
+
+    Defaults to the row data object.
+
 - `tabular.dialogClasses`
 
     The classes to be added to the displayed dialogs, as a string.
@@ -86,6 +92,12 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     Defaults to 'Edit the "%s" object'.
 
+- `tabular.editItem`
+
+    The object to be edited.
+
+    Defaults to the row data object.
+
 - `tabular.infoButtonEnabled`
 
     Whether the 'Information' button must be enabled, with a truethy or falsy value.
@@ -97,6 +109,18 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
     The title of the 'Information' button.
 
     Defaults to 'Informations about the "%s" object'.
+
+- `tabular.infoItem`
+
+    The object to be used when displaying informations.
+
+    Defaults to the row data object.
+
+- `tabular.infoModalTitle`
+
+    The title of the 'Information' modal.
+
+    Defaults to 'Informations'.
 
 - `tabular.wantDeleteConfirmation`
 
@@ -116,7 +140,7 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     Whether to display an 'Information' button on the right, defaulting to `true`
 
-All parameters can be provided as values, or as functions. The provided  function will be called with the row object, and must return the desired value.
+All parameters can be provided as values, or as async functions. The provided function will be called with the row object, and must return the desired value.
 
 Please note that buttons are managed inside of autorun functions. So the package will be reactive to the changes if you provide here reactive data sources.
 
