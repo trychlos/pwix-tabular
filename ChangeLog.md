@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.2.0-rc
+### 1.2.0
 
-    Release date:
+    Release date: 2024- 7- 1
 
     - Let the caller install a checkbox template on boolean values, bumping minor candidate version number
     - Tabular.configure() becomes a reactive data source
@@ -29,4 +29,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Jun. 24th
+- Last updated on 2024, Jul. 1st
