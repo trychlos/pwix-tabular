@@ -4,9 +4,10 @@
 
 ### 1.2.1-rc
 
-    Release date: 
+    Release date:
 
     - Fix delete confirmation modal text
+    - Add missing datatables.net dependencies
 
 ### 1.2.0
 
