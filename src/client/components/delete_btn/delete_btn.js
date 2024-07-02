@@ -16,7 +16,7 @@ Template.delete_btn.onCreated( function(){
 
     self.PCK = {
         enabled: new ReactiveVar( true ),
-        title: new ReactiveVar( '' )
+        button_title: new ReactiveVar( '' )
     };
 });
 
@@ -35,7 +35,7 @@ Template.delete_btn.onRendered( function(){
     self.autorun(() => {
         const dc = Template.currentData();
         if( dc.item && dc.table ){
-            dc.table.opt( 'deleteButtonTitle', pwixI18n.label( I18N, 'delete.btn_title', dc.item._id ), dc.item ).then(( res ) => { self.PCK.title.set( res ); });
+            dc.table.opt( 'deleteButtonTitle', pwixI18n.label( I18N, 'delete.btn_title', dc.item._id ), dc.item ).then(( res ) => { self.PCK.button_title.set( res ); });
         }
     });
 });
@@ -53,7 +53,7 @@ Template.delete_btn.helpers({
 
     // a default title
     title(){
-        return Template.instance().PCK.title.get();
+        return Template.instance().PCK.button_title.get();
     }
 });
 
@@ -64,9 +64,9 @@ Template.delete_btn.events({
         const wantConfirmation = this.table.opt( 'wantDeleteConfirmation', true, item );
         if( wantConfirmation ){
             Bootbox.confirm({
-                title: this.table.opt( 'deleteConfirmationTitle', pwixI18n.label( I18N, 'delete.confirm_title', item._id ), item ),
-                message: this.table.opt( 'deleteConfirmationText', pwixI18n.label( I18N, 'delete.confirm_content', item._id ), item ),
-                mdClassesContent: this.table.opt( 'dialogClasses', '', item )
+                title: await this.table.opt( 'deleteConfirmationTitle', pwixI18n.label( I18N, 'delete.confirm_title', item._id ), item ),
+                message: await this.table.opt( 'deleteConfirmationText', pwixI18n.label( I18N, 'delete.confirm_content', item._id ), item ),
+                mdClassesContent: await this.table.opt( 'dialogClasses', '', item )
             }, function( ret ){
                     if( ret ){
                         instance.$( event.currentTarget ).trigger( 'tabular-delete-event', self );

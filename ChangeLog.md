@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Fix delete confirmation modal text
 
 ### 1.2.0
 

@@ -48,13 +48,13 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     The text to be displayed when requiring the user confirmation, as a HTML string.
 
-    Defaults to 'Deleting an object'.
+    Defaults to 'You are about to delete the "%s" object. Are you sure ?'.
 
 - `tabular.deleteConfirmationTitle`
 
     The title of the confirmation modal dialog.
 
-    Defaults to 'You are about to delete the "%s" object. Are you sure ?'.
+    Defaults to 'Deleting an object'.
 
 - `tabular.deleteButtonEnabled`
 
