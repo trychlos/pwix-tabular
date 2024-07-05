@@ -7,6 +7,12 @@ Tabular.C = {
     Verbose: {
         NONE: 0,
         CONFIGURE:      0x01 <<  0
+    },
+
+    // where to insert additional buttons
+    Where: {
+        AFTER:  'AFTER',
+        BEFORE: 'BEFORE'
     }
 };
 

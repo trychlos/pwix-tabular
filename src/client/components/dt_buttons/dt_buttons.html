@@ -1,6 +1,10 @@
 <template name="dt_buttons">
     <div class="tabular-dt-buttons">
 
+        {{#each btn in beforeButtons }}
+            {{> Template.dynamic template=btn }}
+        {{/each}}
+
         {{#if haveInfoButton }}
             {{> info_btn }}
         {{/if}}
@@ -12,6 +16,10 @@
         {{#if haveDeleteButton }}
             {{> delete_btn }}
         {{/if}}
+
+        {{#each btn in afterButtons }}
+            {{> Template.dynamic template=btn }}
+        {{/each}}
 
     </div>
 </template>

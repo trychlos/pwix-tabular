@@ -2,11 +2,14 @@
  * pwix:tabular/src/common/classes/table.js
  */
 
+import _ from 'lodash';
+const assert = require( 'assert' ).strict;
+
 import { ReactiveVar } from 'meteor/reactive-var';
-import Tabular from 'meteor/aldeed:tabular';
+import { default as alTabular } from 'meteor/aldeed:tabular';
 import { Tracker } from 'meteor/tracker';
 
-export class Table extends Tabular.Table {
+export class Table extends alTabular.Table {
 
     // private data
 
@@ -16,13 +19,43 @@ export class Table extends Tabular.Table {
     // whether the 'tabular_ext' template has been rendered
     #rendered = new ReactiveVar( false );
 
+    // additional buttons
+    #after = new ReactiveVar( [] );
+    #before = new ReactiveVar( [] );
+
     // private methods
+
+    // compute additional buttons
+    //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none empty
+    async _computeAdditionalButtons(){
+        let parms = this.#args && this.#args.tabular && this.#args.tabular.buttons ? this.#args.tabular.buttons : [];
+        parms = ( typeof parms === 'function' ) ? await parms() : parms;
+        assert( parms && _.isArray( parms ), 'expect an array, found '+parms );
+        let after = [];
+        let before = [];
+        parms.forEach(( it ) => {
+            assert( it && _.isObject( it ), 'expect an object, found '+it );
+            assert( it.where === Tabular.C.Where.AFTER || it.where === Tabular.C.Where.BEFORE, 'expect where is Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, found '+it.where );
+            assert( !it.buttons || _.isArray( it.buttons ), 'expect where an array of buttons definitions, found '+it.buttons );
+            if( it.buttons ){
+                it.buttons.forEach(( btn ) => {
+                    if( it.where === Tabular.C.Where.AFTER ){
+                        after.push( btn );
+                    } else {
+                        before.push( btn );
+                    }
+                });
+            }
+        });
+        this.#after.set( after );
+        this.#before.set( before );
+    }
 
     // add the info/edit/delete buttons at the end of each row
     _addButtonsColumn( o ){
         const self = this;
         Tracker.autorun(() => {
-            const haveAnyButton = self.opt( 'withDeleteButton', true ) || self.opt( 'withEditButton', true ) || self.opt( 'withInfoButton', true );
+            const haveAnyButton = self.opt( 'withDeleteButton', true ) || self.opt( 'withEditButton', true ) || self.opt( 'withInfoButton', true ) || this.#after.get().length || this.#before.get().length;
             if( haveAnyButton ){
                 o.columns.push({
                     orderable: false,
@@ -38,7 +71,7 @@ export class Table extends Tabular.Table {
         });
     }
 
-    // install a checbox to display Boolean values unless a teplate be already provided
+    // install a checbox to display Boolean values unless a template be already provided
     _setCheckboxes( o ){
         const self = this;
         o.columns.forEach(( it ) => {
@@ -55,10 +88,10 @@ export class Table extends Tabular.Table {
         this.#args = o;
 
         // add edition buttons unless otherwise requested
-        this._addButtonsColumn( o );
-
-        // use a checkbox to display boolean values
-        this._setCheckboxes( o );
+        this._computeAdditionalButtons().then(() => {
+            this._addButtonsColumn( o );
+            this._setCheckboxes( o );
+        });
 
         // track the 'rendered' state
         Tracker.autorun(() => {
@@ -66,6 +99,20 @@ export class Table extends Tabular.Table {
         });
 
         return this;
+    }
+
+    /**
+     * @param {String} where whether we want Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE buttons 
+     * @returns the array of additional buttons, may be empty
+     */
+    additionalButtons( where ){
+        if( where === Tabular.C.Where.AFTER ){
+            return this.#after.get();
+        } else if( where === Tabular.C.Where.BEFORE ){
+            return this.#before.get();
+        } else {
+            assert( false, 'expect where be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, found '+where );
+        }
     }
 
     /**

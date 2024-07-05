@@ -14,6 +14,16 @@ import './dt_buttons.html';
 
 Template.dt_buttons.helpers({
 
+    // list of buttons after the standards
+    afterButtons(){
+        return this.table.additionalButtons( Tabular.C.Where.AFTER, this.item );
+    },
+
+    // list of buttons before the standards
+    beforeButtons(){
+        return this.table.additionalButtons( Tabular.C.Where.BEFORE, this.item );
+    },
+
     // whether have a delete button ?
     haveDeleteButton(){
         return this.table.opt( 'withDeleteButton', true );

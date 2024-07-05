@@ -44,6 +44,19 @@ This package `Tabular.Table` class extends the `aldeed:tabular` `Tabular.Table` 
 
 The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus following additional parameters, all inside a `tabular` object:
 
+- `tabular.buttons`
+
+    An object which describes additional buttons to be set before or after standard info, edit, delete buttons.
+
+    This is an array of objects, where each object has following keys:
+
+    - `where`: whether to insert before or after the standard buttons, with values:
+
+        - `Tabular.C.Where.BEFORE`
+        - `Tabular.C.Where.AFTER`
+    
+    - `buttons`: an array of Blaze template names to be added at the place.
+
 - `tabular.deleteConfirmationText`
 
     The text to be displayed when requiring the user confirmation, as a HTML string.

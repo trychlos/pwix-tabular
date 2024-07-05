@@ -2,12 +2,13 @@
 
 ## ChangeLog
 
-### 1.2.1-rc
+### 1.3.0-rc
 
     Release date:
 
     - Fix delete confirmation modal text
     - Add missing datatables.net dependencies
+    - Let the caller insert buttons before or after standard ones, bumping minor candidate version number
 
 ### 1.2.0
 
