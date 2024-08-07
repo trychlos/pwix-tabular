@@ -2,11 +2,12 @@
 
 ## ChangeLog
 
-### 1.3.1-rc
+### 1.4.0-rc
 
     Release date: 
 
-    - 
+    - Accepts a null collection (and application-provided data) thus bumping minor candidate version number
+    - Fix the width computing on a tabbed modal
 
 ### 1.3.0
 

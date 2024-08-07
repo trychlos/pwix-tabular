@@ -5,6 +5,7 @@
 import _ from 'lodash';
 const assert = require( 'assert' ).strict;
 
+import { Mongo } from 'meteor/mongo';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { default as alTabular } from 'meteor/aldeed:tabular';
 import { Tracker } from 'meteor/tracker';
@@ -24,6 +25,26 @@ export class Table extends alTabular.Table {
     #before = new ReactiveVar( [] );
 
     // private methods
+
+    // add the info/edit/delete buttons at the end of each row
+    _addButtonsColumn( o ){
+        const self = this;
+        Tracker.autorun( async () => {
+            const haveAnyButton = await self.opt( 'withDeleteButton', true ) || await self.opt( 'withEditButton', true ) || await self.opt( 'withInfoButton', true ) || this.#after.get().length || this.#before.get().length;
+            if( haveAnyButton ){
+                o.columns.push({
+                    orderable: false,
+                    tmpl: Meteor.isClient && Template.dt_buttons,
+                    tmplContext( rowData ){
+                        return {
+                            item: rowData,
+                            table: self
+                        };
+                    }
+                });
+            }
+        });
+    }
 
     // compute additional buttons
     //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none empty
@@ -51,26 +72,6 @@ export class Table extends alTabular.Table {
         this.#before.set( before );
     }
 
-    // add the info/edit/delete buttons at the end of each row
-    _addButtonsColumn( o ){
-        const self = this;
-        Tracker.autorun(() => {
-            const haveAnyButton = self.opt( 'withDeleteButton', true ) || self.opt( 'withEditButton', true ) || self.opt( 'withInfoButton', true ) || this.#after.get().length || this.#before.get().length;
-            if( haveAnyButton ){
-                o.columns.push({
-                    orderable: false,
-                    tmpl: Meteor.isClient && Template.dt_buttons,
-                    tmplContext( rowData ){
-                        return {
-                            item: rowData,
-                            table: self
-                        };
-                    }
-                });
-            }
-        });
-    }
-
     // install a checbox to display Boolean values unless a template be already provided
     _setCheckboxes( o ){
         const self = this;
@@ -82,6 +83,9 @@ export class Table extends alTabular.Table {
     }
 
     constructor( o ){
+        if( !o.collection ){
+            o.collection = new Mongo.Collection( null );
+        }
         super( ...arguments );
 
         // keep the instanciation arguments
@@ -135,7 +139,7 @@ export class Table extends alTabular.Table {
      */
     async opt( name, def, rowData ){
         let res = this.arg( name );
-        res = res ? (( typeof res === 'function' ) ? await res( rowData ) : res ) : def;
+        res = ( res == null ) ? def : (( typeof res === 'function' ) ? await res( rowData ) : res );
         return res;
     }
 

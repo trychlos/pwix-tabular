@@ -42,7 +42,7 @@ Available both on the client and the server.
 
 This package `Tabular.Table` class extends the `aldeed:tabular` `Tabular.Table` class.
 
-The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus following additional parameters, all inside a `tabular` object:
+The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus following additional parameters inside of a `tabular` object:
 
 - `tabular.buttons`
 
