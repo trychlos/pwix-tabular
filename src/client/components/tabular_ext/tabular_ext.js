@@ -13,20 +13,19 @@ Template.tabular_ext.onRendered( function(){
     //  see https://stackoverflow.com/questions/1462138/event-listener-for-when-element-becomes-visible
     // Start observing visbility of element. On change, the callback is called with Boolean visibility as argument:
     function respondToVisibility( element, callback ){
-        const options = {
-            root: document.documentElement,
-        };
         const observer = new IntersectionObserver(( entries, observer ) => {
             entries.forEach(( entry ) => {
+                //console.debug( 'entry', entry, 'entry.intersectionRatio', entry.intersectionRatio );
                 callback( entry.intersectionRatio > 0 );
             });
-        }, options);
-
+        });
         observer.observe( element );
     }
+
     const $node = self.$( '.TabularExt table.dataTable');
     if( $node && $node.length ){
         const cb = function( visible ){
+            //console.debug( 'callback visible', visible );
             if( visible ){
                 // seems that dtApi is of no rescue here
                 //const dtApi = $node.DataTable();
