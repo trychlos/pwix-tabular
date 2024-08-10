@@ -15,6 +15,7 @@ import './dt_checkbox.html';
 Template.dt_checkbox.helpers({
     // whether the dt_checkbox is checked ?
     checked(){
+        //console.debug( this );
         const checked = this.item[this.field.name()];
         return checked ? 'checked' : '';
     },
@@ -28,6 +29,17 @@ Template.dt_checkbox.helpers({
             status = status( this );
         }
         return status ? '' : 'disabled' ;
+    },
+
+    // whether the dt_checkbox is read-only ?
+    readOnly(){
+        let readonly = this.readonly;
+        if( readonly instanceof ReactiveVar ){
+            readonly = readonly.get();
+        } else if( typeof readonly === 'function' ){
+            readonly = readonly( this );
+        }
+        return readonly ? 'readonly' : '' ;
     }
 });
 
