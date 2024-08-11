@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.4.0-rc
+### 1.4.0
 
-    Release date: 
+    Release date: 2024- 8-11
 
     - Accepts a null collection (and application-provided data) thus bumping minor candidate version number
     - Fix the width computing on a tabbed modal
@@ -44,4 +44,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Jul. 16th
+- Last updated on 2024, Aug. 11th
