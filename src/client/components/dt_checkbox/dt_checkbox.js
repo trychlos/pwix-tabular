@@ -6,6 +6,7 @@
  * - field: the Field.Def definition
  * - enabled: a Boolean, or a ReactiveVar or a function which returns a Boolean or a ReactiveVar
  * - readonly: a Boolean, or a ReactiveVar or a function which returns a Boolean or a ReactiveVar
+ * - onCheck: a function called with the 'checked' prop
  */
 
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -54,6 +55,11 @@ Template.dt_checkbox.events({
         }
         if( status ){
             return false;
+        } else {
+            const onCheck = this.onCheck;
+            if( typeof onCheck === 'function' ){
+                onCheck( instance.$( event.currentTarget ).prop( 'checked' ));
+            }
         }
     }
 });

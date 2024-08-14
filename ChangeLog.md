@@ -2,11 +2,11 @@
 
 ## ChangeLog
 
-### 1.4.1-rc
+### 1.5.0-rc
 
     Release date: 
 
-    - 
+    - Define 'onCheck()' new data context property for dt_checkbox component, thus bumping minor candidate version number
 
 ### 1.4.0
 
