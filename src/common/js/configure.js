@@ -7,7 +7,6 @@ import _ from 'lodash';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 let _conf = {};
-
 Tabular._conf = new ReactiveVar( _conf );
 
 Tabular._defaults = {
@@ -23,7 +22,7 @@ Tabular._defaults = {
  */
 Tabular.configure = function( o ){
     if( o && _.isObject( o )){
-        _.merge( _conf, Tabular._defaults, o );
+        _conf = _.merge( Tabular._defaults, _conf, o );
         Tabular._conf.set( _conf );
         // be verbose if asked for
         if( Tabular._conf.verbosity & Tabular.C.Verbose.CONFIGURE ){
@@ -34,5 +33,5 @@ Tabular.configure = function( o ){
     return Tabular._conf.get();
 }
 
-_.merge( _conf, Tabular._defaults );
+_conf = _.merge( {}, Tabular._defaults );
 Tabular._conf.set( _conf );
