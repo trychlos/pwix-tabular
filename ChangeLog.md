@@ -7,6 +7,7 @@
     Release date: 
 
     - Fix configuration overrides
+    - Fix the item addressing on edit/delete buttons
 
 ### 1.5.0
 

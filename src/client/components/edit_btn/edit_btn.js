@@ -15,6 +15,7 @@ Template.edit_btn.onCreated( function(){
     const self = this;
 
     self.PCK = {
+        item: new ReactiveVar( null ),
         enabled: new ReactiveVar( true ),
         title: new ReactiveVar( '' )
     };
@@ -22,6 +23,14 @@ Template.edit_btn.onCreated( function(){
 
 Template.edit_btn.onRendered( function(){
     const self = this;
+
+    // get asynchronously the item
+    self.autorun(() => {
+        const dc = Template.currentData();
+        if( dc.item && dc.table ){
+            dc.table.opt( 'editItem', dc.item, dc.item ).then(( res ) => { self.PCK.item.set( res ); });
+       }
+    });
 
     // get asynchronously the enabled state
     self.autorun(() => {
@@ -59,7 +68,7 @@ Template.edit_btn.helpers({
 
 Template.edit_btn.events({
     async 'click .tabular-edit-btn button'( event, instance ){
-        const item = await this.table.opt( 'editItem', this.item, this.item );
+        const item = instance.PCK.item.get();
         this.item = item;
         instance.$( event.currentTarget ).trigger( 'tabular-edit-event', this );
     }

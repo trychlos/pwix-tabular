@@ -15,6 +15,7 @@ Template.delete_btn.onCreated( function(){
     const self = this;
 
     self.PCK = {
+        item: new ReactiveVar( null ),
         enabled: new ReactiveVar( true ),
         button_title: new ReactiveVar( '' )
     };
@@ -22,6 +23,14 @@ Template.delete_btn.onCreated( function(){
 
 Template.delete_btn.onRendered( function(){
     const self = this;
+
+    // get asynchronously the item
+    self.autorun(() => {
+        const dc = Template.currentData();
+        if( dc.item && dc.table ){
+            dc.table.opt( 'deleteItem', dc.item, dc.item ).then(( res ) => { self.PCK.item.set( res ); });
+        }
+    });
 
     // get asynchronously the enabled state
     self.autorun(() => {
@@ -60,7 +69,7 @@ Template.delete_btn.helpers({
 Template.delete_btn.events({
     async 'click .tabular-delete-btn button'( event, instance ){
         const self = this;
-        const item = await this.table.opt( 'deleteItem', this.item, this.item );
+        const item = instance.PCK.item.get();
         const wantConfirmation = this.table.opt( 'wantDeleteConfirmation', true, item );
         if( wantConfirmation ){
             Bootbox.confirm({
