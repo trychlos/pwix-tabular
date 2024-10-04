@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.5.1-rc
+### 1.5.1
 
-    Release date: 
+    Release date: 2024-10- 4
 
     - Fix configuration overrides
     - Fix the item addressing on edit/delete buttons
@@ -57,4 +57,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Sep. 13th
+- Last updated on 2024, Oct. 4th
