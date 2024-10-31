@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Fix comment spelling
 
 ### 1.5.1
 

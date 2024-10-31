@@ -41,6 +41,6 @@ Template.tabular_ext.onRendered( function(){
         respondToVisibility( $node[0], cb );
     }
 
-    // advertize the class instance of the rendering state
+    // advertise the class instance of the rendering state
     Template.currentData().table.rendered( true );
 });
