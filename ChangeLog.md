@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Initialize the aldeed:tabular package (but how dit it work before !?)
 
 ### 1.5.2
 

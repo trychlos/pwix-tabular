@@ -82,6 +82,10 @@ export class Table extends alTabular.Table {
         });
     }
 
+    /**
+     * @param {*} o 
+     * @returns {TabularExt} this instance
+     */
     constructor( o ){
         if( !o.collection ){
             o.collection = new Mongo.Collection( null );
