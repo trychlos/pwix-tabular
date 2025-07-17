@@ -79,6 +79,9 @@ export class Table extends alTabular.Table {
             if( it.tmpl === 'dt_checkbox' ){
                 it.tmpl = Meteor.isClient && Template.dt_checkbox;
             }
+            if( it.tmpl === 'dt_last_update' ){
+                it.tmpl = Meteor.isClient && Template.dt_last_update;
+            }
         });
     }
 

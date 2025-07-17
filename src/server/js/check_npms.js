@@ -24,6 +24,7 @@ checkNpmVersions({
     'datatables.net-rowgroup-bs5': '^1.5.0',
     'datatables.net-scroller-bs5': '^2.4.3',
     'lodash': '^4.17.0',
+    'strftime': '^0.10.0'
 },
     'pwix:tabular'
 );

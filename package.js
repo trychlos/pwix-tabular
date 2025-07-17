@@ -1,6 +1,6 @@
 Package.describe({
     name: 'pwix:tabular',
-    version: '1.5.3-rc',
+    version: '1.6.0-rc',
     summary: 'Extends aldeed:tabular package for our applications',
     git: 'https://github.com/trychlos/pwix-tabular.git',
     documentation: 'README.md'
@@ -33,6 +33,7 @@ function configure( api ){
     _use( 'blaze-html-templates@2.0.0 || 3.0.0-alpha300.0', 'client' );
     _use( 'ecmascript' );
     _use( 'less@4.0.0', 'client' );
+    _use( 'pwix:accounts-hub@1.2.0' );
     _use( 'pwix:bootbox@1.5.5' );
     _use( 'pwix:i18n@1.5.0' );
     _use( 'pwix:modal-info@1.4.0' );

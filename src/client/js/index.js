@@ -5,8 +5,9 @@
 import { default as alTabular } from 'meteor/aldeed:tabular';
 
 // import here templates addressed by the  Tabular class
-import '../components/dt_checkbox/dt_checkbox.js';
 import '../components/dt_buttons/dt_buttons.js';
+import '../components/dt_checkbox/dt_checkbox.js';
+import '../components/dt_last_update/dt_last_update.js';
 
 // before importing the class itself
 import '../../common/js/index.js';

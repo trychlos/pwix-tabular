@@ -17,6 +17,9 @@ Tabular.i18n = {
             info: {
                 btn_title: 'Informations about the "%s" object'
             },
+            last_update: {
+                format: '%s by %s'
+            },
             modalinfo: {
                 dialog_title: 'Informations'
             }

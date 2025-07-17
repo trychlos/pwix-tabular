@@ -2,11 +2,12 @@
 
 ## ChangeLog
 
-### 1.5.3-rc
+### 1.6.0-rc
 
     Release date: 
 
     - Initialize the aldeed:tabular package (but how dit it work before !?)
+    - Define new dt_last_update component, thus bumping minor candidate version number
 
 ### 1.5.2
 
