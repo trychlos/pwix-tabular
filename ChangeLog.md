@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.6.0-rc
+### 1.6.0
 
-    Release date: 
+    Release date: 2026- 2- 9
 
     - Initialize the aldeed:tabular package (but how dit it work before !?)
     - Define new dt_last_update component, thus bumping minor candidate version number
@@ -70,4 +70,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Nov. 19th
+- Last updated on 2026, Feb. 9th
