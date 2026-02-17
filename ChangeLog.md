@@ -7,6 +7,7 @@
     Release date: 
 
     - configure() now warns for unmanaged keys
+    - Fix tabular.less to no more show scrollbars (most probably to be reviewed when we will have more content to display)
 
 ### 1.6.0
 

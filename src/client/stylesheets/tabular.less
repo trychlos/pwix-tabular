@@ -3,6 +3,24 @@
  */
 
 .TabularExt {
+    // happens that DataTables inside of a Tabbed panel displays scrollbars even though there is nothing to scroll to
+    overflow-y: auto;
+    .dt-container .row {
+        margin-left: 0;
+        margin-right: 0;
+
+        .dt-layout-start {
+            padding-left: 0;
+        }
+        .dt-layout-end {
+            padding-right: 0;
+        }
+        .dt-layout-full {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
     .tabular-dt-buttons {
         display: flex;
         // a bad hack to get a column the ad-hoc size for three buttons (which happens to be rather 130px)
