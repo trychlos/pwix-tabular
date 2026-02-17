@@ -22,11 +22,22 @@ Tabular._defaults = {
  */
 Tabular.configure = function( o ){
     if( o && _.isObject( o )){
-        _conf = _.merge( Tabular._defaults, _conf, o );
-        Tabular._conf.set( _conf );
-        // be verbose if asked for
-        if( Tabular._conf.verbosity & Tabular.C.Verbose.CONFIGURE ){
-            console.log( 'pwix:forms configure() with', o );
+        // check that keys exist
+        let built_conf = {};
+        Object.keys( o ).forEach(( it ) => {
+            if( Object.keys( Tabular._defaults ).includes( it )){
+                built_conf[it] = o[it];
+            } else {
+                console.warn( 'pwix:tabular configure() ignore unmanaged key \''+it+'\'' );
+            }
+        });
+        if( Object.keys( built_conf ).length ){
+            _conf = _.merge( Tabular._defaults, _conf, built_conf );
+            Tabular._conf.set( _conf );
+            // be verbose if asked for
+            if( Tabular._conf.verbosity & Tabular.C.Verbose.CONFIGURE ){
+                console.log( 'pwix:forms configure() with', built_conf );
+            }
         }
     }
     // also acts as a getter
