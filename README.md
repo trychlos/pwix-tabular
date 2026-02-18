@@ -43,9 +43,9 @@ Available both on the client and the server.
 
 This package `Tabular.Table` class extends the `aldeed:tabular` `Tabular.Table` class.
 
-The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus following additional parameters inside of a `tabular` object:
+The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus following additional parameters inside of a `pwix` object:
 
-- `tabular.buttons`
+- `pwix.buttons`
 
     An object which describes additional buttons to be set before or after standard info, edit, delete buttons.
 
@@ -58,103 +58,103 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
     
     - `buttons`: an array of Blaze template names to be added at the place.
 
-- `tabular.deleteConfirmationText`
+- `pwix.deleteConfirmationText`
 
     The text to be displayed when requiring the user confirmation, as a HTML string.
 
     Defaults to 'You are about to delete the "%s" object. Are you sure ?'.
 
-- `tabular.deleteConfirmationTitle`
+- `pwix.deleteConfirmationTitle`
 
     The title of the confirmation modal dialog.
 
     Defaults to 'Deleting an object'.
 
-- `tabular.deleteButtonEnabled`
+- `pwix.deleteButtonEnabled`
 
     Whether the 'Delete' button must be enabled, with a truethy or falsy value.
 
     Defaults to `true` (enabled).
 
-- `tabular.deleteButtonTitle`
+- `pwix.deleteButtonTitle`
 
     The title of the 'Delete' button.
 
     Defaults to 'Delete the "%s" object'.
 
-- `tabular.deleteItem`
+- `pwix.deleteItem`
 
     The object to be deleted.
 
     Defaults to the row data object.
 
-- `tabular.dialogClasses`
+- `pwix.dialogClasses`
 
     The classes to be added to the displayed dialogs, as a string.
 
     Defaults to nothing.
 
-- `tabular.editButtonEnabled`
+- `pwix.editButtonEnabled`
 
     Whether the 'Edit' button must be enabled, with a truethy or falsy value.
 
     Defaults to `true` (enabled).
 
-- `tabular.editButtonTitle`
+- `pwix.editButtonTitle`
 
     The title of the 'Edit' button.
 
     Defaults to 'Edit the "%s" object'.
 
-- `tabular.editItem`
+- `pwix.editItem`
 
     The object to be edited.
 
     Defaults to the row data object.
 
-- `tabular.infoButtonEnabled`
+- `pwix.infoButtonEnabled`
 
     Whether the 'Information' button must be enabled, with a truethy or falsy value.
 
     Defaults to `true` (enabled).
 
-- `tabular.infoButtonTitle`
+- `pwix.infoButtonTitle`
 
     The title of the 'Information' button.
 
     Defaults to 'Informations about the "%s" object'.
 
-- `tabular.infoItem`
+- `pwix.infoItem`
 
     The object to be used when displaying informations.
 
     Defaults to the row data object.
 
-- `tabular.infoModalTitle`
+- `pwix.infoModalTitle`
 
     The title of the 'Information' modal.
 
     Defaults to 'Informations'.
 
-- `tabular.wantDeleteConfirmation`
+- `pwix.wantDeleteConfirmation`
 
     Whether the `tabular-delete-event` event must be triggered after a user confirmation (if `true`) or as soon as the user has clicked on the `Delete` button (if `false`).
 
     Defaults to `true` (after user confirmation).
 
-- `tabular.withDeleteButton`
+- `pwix.withDeleteButton`
 
     Whether to display a 'Delete' button on the right, defaulting to `true`.
 
-- `tabular.withEditButton`
+- `pwix.withEditButton`
 
     Whether to display an 'Edition' button on the right, defaulting to `true`.
 
-- `tabular.withInfoButton`
+- `pwix.withInfoButton`
 
     Whether to display an 'Information' button on the right, defaulting to `true`.
 
-- `tabular.withSettingsItems`
+- `pwix.withSettingsItems`
 
     An array of items to be displayed in the settings menu, defaulting to an empty array.
 
@@ -169,6 +169,8 @@ All parameters can be provided as values, or as async functions. The provided fu
 Please note that buttons are managed inside of autorun functions. So the package will be reactive to the changes if you provide here reactive data sources.
 
 As its `aldeed:tabular` ancestor, this package requires that the `Table` constructor be called in same terms, both in client and server side.
+
+NB: the constructor used to use a `tabular` sub-object until v1.6 instead of the new `pwix`. This usage has since been deprecated starting with v1.7.
 
 ## Configuration
 

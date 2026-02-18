@@ -90,8 +90,18 @@ export class Table extends alTabular.Table {
      */
     _arg( name ){
         let res = null;
-        if( this.#args && this.#args.tabular && Object.keys( this.#args.tabular).includes( name )){
-            res = this.#args.tabular[name];
+        if( this.#args ){
+            if( this.#args.pwix ){
+                if( Object.keys( this.#args.pwix).includes( name )){
+                    res = this.#args.pwix[name];
+                }
+            }
+            if( this.#args.tabular ){
+                console.warn( 'pwix:tabular Table() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations' );
+                if( !res && Object.keys( this.#args.tabular).includes( name )){
+                    res = this.#args.tabular[name];
+                }
+            }
         }
         return res;
     }
@@ -99,7 +109,7 @@ export class Table extends alTabular.Table {
     // compute additional buttons to be added to standard info/edit/delete buttons
     //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none empty
     async _computeAdditionalButtons(){
-        let parms = this.#args && this.#args.tabular && this.#args.tabular.buttons ? this.#args.tabular.buttons : [];
+        let parms = this.#args && this.#args.pwix && this.#args.pwix.buttons ? this.#args.pwix.buttons : [];
         parms = ( typeof parms === 'function' ) ? await parms() : parms;
         assert( parms && _.isArray( parms ), 'expect an array, found '+parms );
         let after = [];
