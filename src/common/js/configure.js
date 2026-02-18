@@ -35,7 +35,7 @@ Tabular.configure = function( o ){
             _conf = _.merge( Tabular._defaults, _conf, built_conf );
             Tabular._conf.set( _conf );
             // be verbose if asked for
-            if( Tabular._conf.verbosity & Tabular.C.Verbose.CONFIGURE ){
+            if( _conf.verbosity & Tabular.C.Verbose.CONFIGURE ){
                 console.log( 'pwix:forms configure() with', built_conf );
             }
         }

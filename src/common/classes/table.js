@@ -29,6 +29,9 @@ export class Table extends alTabular.Table {
     // whether we have an additional buttons column
     #haveButtonsColumn = new ReactiveVar( false );
 
+    // whether the 'tabular' deprecation has already been warned
+    #tabularWarned = false;
+
     // static methods
 
     // private methods
@@ -97,7 +100,10 @@ export class Table extends alTabular.Table {
                 }
             }
             if( this.#args.tabular ){
-                console.warn( 'pwix:tabular Table() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations' );
+                if( !this.#tabularWarned ){
+                    console.warn( 'pwix:tabular Table() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations' );
+                    this.#tabularWarned = true;
+                }
                 if( !res && Object.keys( this.#args.tabular).includes( name )){
                     res = this.#args.tabular[name];
                 }
@@ -151,6 +157,7 @@ export class Table extends alTabular.Table {
      * @returns {TabularExt} this instance
      */
     constructor( options ){
+        options = options || {};
         if( !options.collection ){
             options.collection = new Mongo.Collection( null );
         }

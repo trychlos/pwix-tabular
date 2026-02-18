@@ -10,6 +10,7 @@
     - Fix tabular.less to no more show scrollbars (most probably to be reviewed when we will have more content to display)
     - Define new 'withSettingsItems' which let display a dropdown menu in the rightmost header cell, thus bumping minor candidate version number
     - Rename the 'tabular' sub-object of Table constructor options to 'pwix'
+    - Initialize a tests suite
 
 ### 1.6.0
 

@@ -15,6 +15,12 @@ This Meteor package is installable with the usual command:
     meteor npm install datatables.net-bs5 datatables.net-buttons-bs5 datatables.net-colreorder-bs5 datatables.net-fixedheader-bs5 datatables.net-responsive-bs5 datatables.net-rowgroup-bs5 datatables.net-scroller-bs5 lodash strftime --save
 ```
 
+And to run the tests suite:
+```sh
+    meteor add meteortesting:mocha lmieulet:meteor-coverage
+    meteor npm install chai sinon --save-dev
+```
+
 ## Usage
 
 In your .html template, use `tabular_ext` template instead of `tabular`, with just the same parameters.

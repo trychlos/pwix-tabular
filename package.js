@@ -17,9 +17,10 @@ Package.onUse( function( api ){
 
 Package.onTest( function( api ){
     configure( api );
-    api.use( 'tinytest' );
+    api.use( 'meteortesting:mocha@3.3.0' );
     api.use( 'pwix:tabular' );
-    api.mainModule( 'test/js/index.js' );
+    api.mainModule( 'test/client/js/index.test.js', 'client' );
+    api.mainModule( 'test/server/js/index.test.js', 'server' );
 });
 
 function configure( api ){

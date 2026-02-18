@@ -13,6 +13,7 @@ if( false ){
     require( 'datatables.net-responsive-bs5/package.json' );
     require( 'datatables.net-rowgroup-bs5/package.json' );
     require( 'datatables.net-scroller-bs5/package.json' );
+    require( 'strftime/package.json' );
 }
 
 checkNpmVersions({
