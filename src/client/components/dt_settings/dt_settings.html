@@ -1,0 +1,24 @@
+<template name="dt_settings">
+    <div class="tabular-dt-settings ui-right">
+
+        <div class="dropdown">
+
+            <button class="btn btn-sm" data-bs-toggle="dropdown" aria-expanded="false" title="{{ i18n key="settings.title" }}">
+                <span class="fa-solid fa-fw fa-gear"></span>
+            </button>
+
+            <ul class="dropdown-menu">
+                {{#each it in optionsList }}
+                    <li>
+                        <a class="{{ css it }}" data-event="{{ event it }}" href="#">
+                            {{{ icon it }}}
+                            {{{ label it }}}
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+
+        </div>
+
+    </div>
+</template>

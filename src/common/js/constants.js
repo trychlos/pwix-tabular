@@ -3,6 +3,12 @@
  */
 
 Tabular.C = {
+    // menu items
+    Items: {
+        COLUMN_SELECTION: 'COLUMN_SELECTION',
+        DIVIDER: 'DIVIDER'
+    },
+
     // verbosity levels
     Verbose: {
         NONE: 0,

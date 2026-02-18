@@ -42,5 +42,21 @@ Template.tabular_ext.onRendered( function(){
     }
 
     // advertise the class instance of the rendering state
-    Template.currentData().table.rendered( true );
+    //Template.currentData().table.rendered( true );
+
+    // aldeed:meteor-tabular creates the table.dataTable when rendering
+    // this code runs and let us access the data of a child Blaze view - but useless atm
+    /*
+    self.autorun(() => {
+        const node = self.find( 'table.dataTable' );
+        if( node ){
+            let view = Blaze.getView( node );
+            // Walk up until we find the template view
+            while( view && !view.name.startsWith( 'Template.' )){
+                view = view.parentView;
+            }
+            const instance = view && view.templateInstance();
+        }
+    });
+    */
 });

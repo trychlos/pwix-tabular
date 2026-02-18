@@ -2,12 +2,13 @@
 
 ## ChangeLog
 
-### 1.6.1-rc.0
+### 1.7.0-rc.0
 
     Release date: 
 
     - configure() now warns for unmanaged keys
     - Fix tabular.less to no more show scrollbars (most probably to be reviewed when we will have more content to display)
+    - Define new 'withSettingsItems' which let display a dropdown menu in the rightmost header cell, thus bumping minor candidate version number
 
 ### 1.6.0
 

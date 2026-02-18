@@ -22,6 +22,10 @@ Tabular.i18n = {
             },
             modalinfo: {
                 dialog_title: 'Informations'
+            },
+            settings: {
+                columns_selection: 'Columns selection',
+                title: 'Personalize'
             }
         }
     }

@@ -144,15 +144,25 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
 - `tabular.withDeleteButton`
 
-    Whether to display a 'Delete' button on the right, defaulting to `true`
+    Whether to display a 'Delete' button on the right, defaulting to `true`.
 
 - `tabular.withEditButton`
 
-    Whether to display an 'Edition' button on the right, defaulting to `true`
+    Whether to display an 'Edition' button on the right, defaulting to `true`.
 
 - `tabular.withInfoButton`
 
-    Whether to display an 'Information' button on the right, defaulting to `true`
+    Whether to display an 'Information' button on the right, defaulting to `true`.
+
+- `tabular.withSettingsItems`
+
+    An array of items to be displayed in the settings menu, defaulting to an empty array.
+
+    Items are expected to be either an AppPages.MenuItem (in duck-typing terms, they are expected to implement the same interface), or be a string constant among:
+
+    - `Tabular.C.Items.COLUMN_SELECTION`: let the user select displayed columns of the table
+
+    The settings menu button is put on the header cell of the last column, which typically is the additional buttons column. It is not created if there is no button at all. When an item is chosen in this settings menu, a `tabular-settings-event` event is triggered for this item.
 
 All parameters can be provided as values, or as async functions. The provided function will be called with the row object, and must return the desired value.
 

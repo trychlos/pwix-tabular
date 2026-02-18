@@ -12,6 +12,8 @@ import { Tracker } from 'meteor/tracker';
 
 export class Table extends alTabular.Table {
 
+    // static data
+
     // private data
 
     // instanciation args
@@ -24,9 +26,14 @@ export class Table extends alTabular.Table {
     #after = new ReactiveVar( [] );
     #before = new ReactiveVar( [] );
 
+    // whether we have an additional buttons column
+    #haveButtonsColumn = new ReactiveVar( false );
+
+    // static methods
+
     // private methods
 
-    // add the info/edit/delete buttons at the end of each row
+    // add a column to the table definition if we have have additional buttons
     _addButtonsColumn( o ){
         const self = this;
         Tracker.autorun( async () => {
@@ -42,11 +49,54 @@ export class Table extends alTabular.Table {
                         };
                     }
                 });
+                //console.debug( 'pwix:tabular addButtonsColumn', this.name, o.columns );
+            }
+            self.#haveButtonsColumn.set( haveAnyButton );
+        });
+    }
+
+    // add a button as the header of the extra buttons column to edit the table settings
+    // this require a) to have an extra buttons column and b) to have at least one required item to be displayted in this settings dropdown menu
+    _addSettingsButton( o ){
+        const self = this;
+        Tracker.autorun( async () => {
+            //console.debug( 'pwix:tabular', self.name, o, o.headerCallback );
+            const items = await self.opt( 'withSettingsItems', [] );
+            const haveAnyButton = self.#haveButtonsColumn.get();
+            if( items.length && haveAnyButton ){
+                o.headerCallback = function( thead ){
+                    const $th = $( thead ).find( 'th' );
+                    if( $th.length ){
+                        const $settingsTh = $th.eq( $th.length-1 );
+                        if( $settingsTh.data( 'dtSettingsView' )) return;
+                        $settingsTh.empty();
+                        const view = Blaze.renderWithData( Template.dt_settings, { table: self }, $settingsTh[0] );
+                        // Store the view so we can destroy it later if needed
+                        $settingsTh.data( 'dtSettingsView', view );
+                    }
+                };
+                // take care of informing the underlying aldeed:tabular.Table options of this update
+                // rationale: aldeed:tabular.Table keeps both some individual items of the options because it uses them to handle the pagination
+                // and a 'ommitted' copy of the provided options. At this moment, of the instanciation, the below line is the only way to
+                // make the underlying package know that we need to insert into the DT callbacks
+                self.options.headerCallback = o.headerCallback;
             }
         });
     }
 
-    // compute additional buttons
+    /*
+     * @param {String} name
+     * @returns the content of the instanciation argument, which may be null
+     */
+    _arg( name ){
+        let res = null;
+        if( this.#args && this.#args.tabular && Object.keys( this.#args.tabular).includes( name )){
+            res = this.#args.tabular[name];
+        }
+        return res;
+    }
+
+    // compute additional buttons to be added to standard info/edit/delete buttons
     //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none empty
     async _computeAdditionalButtons(){
         let parms = this.#args && this.#args.tabular && this.#args.tabular.buttons ? this.#args.tabular.buttons : [];
@@ -70,6 +120,7 @@ export class Table extends alTabular.Table {
         });
         this.#after.set( after );
         this.#before.set( before );
+        //console.debug( '_computeAdditionalButtons', 'after', after, 'before', before );
     }
 
     // install a checbox to display Boolean values unless a template be already provided
@@ -86,29 +137,34 @@ export class Table extends alTabular.Table {
     }
 
     /**
-     * @param {*} o 
+     * @param {Object} options the TabularExt definition
      * @returns {TabularExt} this instance
      */
-    constructor( o ){
-        if( !o.collection ){
-            o.collection = new Mongo.Collection( null );
+    constructor( options ){
+        if( !options.collection ){
+            options.collection = new Mongo.Collection( null );
         }
-        super( ...arguments );
+        super( options );
 
         // keep the instanciation arguments
-        this.#args = o;
+        this.#args = options;
 
-        // add edition buttons unless otherwise requested
+        // add editional buttons
+        // info/edit/delete buttons are rather opt-out (default to true)
+        // before and after additional buttons are opt-in (must be explicitely defined)
         this._computeAdditionalButtons().then(() => {
-            this._addButtonsColumn( o );
-            this._setCheckboxes( o );
+            this._addButtonsColumn( options );
+            this._addSettingsButton( options );
+            this._setCheckboxes( options );
         });
 
         // track the 'rendered' state
         Tracker.autorun(() => {
             //console.debug( 'pwix:tabular rendered', this.name, this.rendered());
+            //console.debug( 'pwix:tabular haveButtonsColumn', this.name, this.#haveButtonsColumn.get());
         });
 
+        //console.debug( 'pwix:tabular instanciating', this.name, options );
         return this;
     }
 
@@ -128,24 +184,12 @@ export class Table extends alTabular.Table {
 
     /**
      * @param {String} name
-     * @returns the content of the instanciation argument, which may be null
-     */
-    arg( name ){
-        let res = null;
-        if( this.#args && this.#args.tabular && Object.keys( this.#args.tabular).includes( name )){
-            res = this.#args.tabular[name];
-        }
-        return res;
-    }
-
-    /**
-     * @param {String} name
      * @param {Any} def
      * @param {Object} rowData
      * @returns the value, or the value returned by the function, or the default value
      */
     async opt( name, def, rowData ){
-        let res = this.arg( name );
+        let res = this._arg( name );
         res = ( res == null ) ? def : (( typeof res === 'function' ) ? await res( rowData ) : res );
         return res;
     }
@@ -155,6 +199,7 @@ export class Table extends alTabular.Table {
      * @param {Boolean} rendered
      * @returns {Boolean} whether the associated template_ext component has been rendered
      */
+    /*
     rendered( rendered ){
         if( rendered !== undefined ){
             if( rendered === true || rendered === false ){
@@ -165,4 +210,5 @@ export class Table extends alTabular.Table {
         }
         return this.#rendered.get();
     }
+        */
 };
