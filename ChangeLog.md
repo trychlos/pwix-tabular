@@ -11,6 +11,7 @@
     - Define new 'withSettingsItems' which let display a dropdown menu in the rightmost header cell, thus bumping minor candidate version number
     - Rename the 'tabular' sub-object of Table constructor options to 'pwix'
     - Initialize a tests suite
+    - Use pwix:logger universal logger
 
 ### 1.6.0
 

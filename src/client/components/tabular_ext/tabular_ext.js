@@ -2,7 +2,11 @@
  * pwix:tabular/src/client/components/tabular_ext/tabular_ext.js
  */
 
+import { Logger } from 'meteor/pwix:logger';
+
 import './tabular_ext.html';
+
+const logger = Logger.get();
 
 Template.tabular_ext.onRendered( function(){
     const self = this;
@@ -15,7 +19,7 @@ Template.tabular_ext.onRendered( function(){
     function respondToVisibility( element, callback ){
         const observer = new IntersectionObserver(( entries, observer ) => {
             entries.forEach(( entry ) => {
-                //console.debug( 'entry', entry, 'entry.intersectionRatio', entry.intersectionRatio );
+                //logger.debug( 'entry', entry, 'entry.intersectionRatio', entry.intersectionRatio );
                 callback( entry.intersectionRatio > 0 );
             });
         });
@@ -25,16 +29,16 @@ Template.tabular_ext.onRendered( function(){
     const $node = self.$( '.TabularExt table.dataTable');
     if( $node && $node.length ){
         const cb = function( visible ){
-            //console.debug( 'callback visible', visible );
+            //logger.debug( 'callback visible', visible );
             if( visible ){
                 // seems that dtApi is of no rescue here
                 //const dtApi = $node.DataTable();
-                //console.debug( 'dtApi', dtApi );
+                //logger.debug( 'dtApi', dtApi );
                 //dtApi.responsive.recalc(); inoperant in the case
                 //dtApi.columns.adjust(); inoperant in the case
 
                 // eventually just try to remove the width attribute - which happens to works
-                //console.debug( 'width', $node.width());
+                //logger.debug( 'width', $node.width());
                 $node.width( '' );
             }
         };

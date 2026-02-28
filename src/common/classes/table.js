@@ -5,10 +5,13 @@
 import _ from 'lodash';
 const assert = require( 'assert' ).strict;
 
+import { Logger } from 'meteor/pwix:logger';
 import { Mongo } from 'meteor/mongo';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { default as alTabular } from 'meteor/aldeed:tabular';
 import { Tracker } from 'meteor/tracker';
+
+const logger = Logger.get();
 
 export class Table extends alTabular.Table {
 
@@ -52,7 +55,7 @@ export class Table extends alTabular.Table {
                         };
                     }
                 });
-                //console.debug( 'pwix:tabular addButtonsColumn', this.name, o.columns );
+                //logger.debug( 'pwix:tabular addButtonsColumn', this.name, o.columns );
             }
             self.#haveButtonsColumn.set( haveAnyButton );
         });
@@ -63,7 +66,7 @@ export class Table extends alTabular.Table {
     _addSettingsButton( o ){
         const self = this;
         Tracker.autorun( async () => {
-            //console.debug( 'pwix:tabular', self.name, o, o.headerCallback );
+            //logger.debug( 'pwix:tabular', self.name, o, o.headerCallback );
             const items = await self.opt( 'withSettingsItems', [] );
             const haveAnyButton = self.#haveButtonsColumn.get();
             if( items.length && haveAnyButton ){
@@ -80,7 +83,7 @@ export class Table extends alTabular.Table {
                 };
                 // take care of informing the underlying aldeed:tabular.Table options of this update
                 // rationale: aldeed:tabular.Table keeps both some individual items of the options because it uses them to handle the pagination
-                // and a 'ommitted' copy of the provided options. At this moment, of the instanciation, the below line is the only way to
+                // and a 'ommitted' copy of the provided options. At this moment of the instanciation, the below line is the only way to
                 // make the underlying package know that we need to insert into the DT callbacks
                 self.options.headerCallback = o.headerCallback;
             }
@@ -101,7 +104,7 @@ export class Table extends alTabular.Table {
             }
             if( this.#args.tabular ){
                 if( !this.#tabularWarned ){
-                    console.warn( 'pwix:tabular Table() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations' );
+                    logger.warn( 'Table._arg() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations to use \'pwix\' instead' );
                     this.#tabularWarned = true;
                 }
                 if( !res && Object.keys( this.#args.tabular).includes( name )){
@@ -136,7 +139,7 @@ export class Table extends alTabular.Table {
         });
         this.#after.set( after );
         this.#before.set( before );
-        //console.debug( '_computeAdditionalButtons', 'after', after, 'before', before );
+        //logger.debug( '_computeAdditionalButtons', 'after', after, 'before', before );
     }
 
     // install a checbox to display Boolean values unless a template be already provided
@@ -177,11 +180,11 @@ export class Table extends alTabular.Table {
 
         // track the 'rendered' state
         Tracker.autorun(() => {
-            //console.debug( 'pwix:tabular rendered', this.name, this.rendered());
-            //console.debug( 'pwix:tabular haveButtonsColumn', this.name, this.#haveButtonsColumn.get());
+            //logger.debug( 'rendered', this.name, this.rendered());
+            //logger.debug( 'haveButtonsColumn', this.name, this.#haveButtonsColumn.get());
         });
 
-        //console.debug( 'pwix:tabular instanciating', this.name, options );
+        //logger.debug( 'instanciating', this.name, options );
         return this;
     }
 
@@ -222,7 +225,7 @@ export class Table extends alTabular.Table {
             if( rendered === true || rendered === false ){
                 this.#rendered.set( rendered );
             } else {
-                console.error( 'expected a Boolean value, found', rendered );
+                logger.error( 'expected a Boolean value, found', rendered );
             }
         }
         return this.#rendered.get();

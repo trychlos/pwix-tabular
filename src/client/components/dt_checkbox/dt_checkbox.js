@@ -16,7 +16,6 @@ import './dt_checkbox.html';
 Template.dt_checkbox.helpers({
     // whether the dt_checkbox is checked ?
     checked(){
-        //console.debug( this );
         const checked = this.item[this.field.name()];
         return checked ? 'checked' : '';
     },

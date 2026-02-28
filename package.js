@@ -37,6 +37,7 @@ function configure( api ){
     _use( 'pwix:accounts-hub@1.2.0' );
     _use( 'pwix:bootbox@1.5.5' );
     _use( 'pwix:i18n@1.5.0' );
+    _use( 'pwix:logger@1.0.0-rc' );
     _use( 'pwix:modal-info@1.4.0' );
     _use( 'pwix:ui-bootstrap5@2.0.0' );
     _use( 'pwix:ui-fontawesome6@1.0.0', 'client' );

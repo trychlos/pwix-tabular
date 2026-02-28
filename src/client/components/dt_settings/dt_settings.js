@@ -5,10 +5,13 @@
  * - table: the Tabular.Table instance
  */
 
+import { Logger } from 'meteor/pwix:logger';
 import { pwixI18n } from 'meteor/pwix:i18n';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './dt_settings.html';
+
+const logger = Logger.get();
 
 Template.dt_settings.onCreated( function(){
     const self = this;
@@ -38,12 +41,12 @@ Template.dt_settings.onCreated( function(){
                     if( Object.keys( self.PCK.constants ).includes( it )){
                         list.push( self.PCK.constants[it] );
                     } else {
-                        console.warn( 'pwix:tabular \''+it+'\' identifier is not known' );
+                        logger.warn( 'pwix:tabular \''+it+'\' identifier is not known' );
                     }
                 } else if( it.css || it.event || it.icon || it.label ){
                     list.push( it );
                 } else {
-                    console.warn( 'pwix:tabular provided item doesn\'t seem to have any necessary informations (see AppPages::MenuItem class), got', it );
+                    logger.warn( 'pwix:tabular provided item doesn\'t seem to have any necessary informations (see AppPages::MenuItem class), got', it );
                 }
                 return true;
             });

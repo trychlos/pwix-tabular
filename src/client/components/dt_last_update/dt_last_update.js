@@ -12,14 +12,16 @@ import strftime from 'strftime';
 import { strict as assert } from 'node:assert';
 
 import { AccountsHub } from 'meteor/pwix:accounts-hub';
+import { Logger } from 'meteor/pwix:logger';
 import { pwixI18n } from 'meteor/pwix:i18n';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './dt_last_update.html';
 
+const logger = Logger.get();
+
 Template.dt_last_update.onCreated( function(){
     const self = this;
-    //console.debug( self );
 
     self.APP = {
         author: new ReactiveVar( '' ),
@@ -55,13 +57,13 @@ Template.dt_last_update.onCreated( function(){
 
     // track the RVs
     self.autorun(() => {
-        //console.debug( 'stamp_at', self.APP.stamp_at.get());
+        //logger.debug( 'stamp_at', self.APP.stamp_at.get());
     });
     self.autorun(() => {
-        //console.debug( 'stamp_by', self.APP.stamp_by.get());
+        //logger.debug( 'stamp_by', self.APP.stamp_by.get());
     });
     self.autorun(() => {
-        //console.debug( 'author', self.APP.author.get());
+        //logger.debug( 'author', self.APP.author.get());
     });
 });
 

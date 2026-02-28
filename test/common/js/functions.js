@@ -1,3 +1,7 @@
+import { Logger } from 'meteor/pwix:logger';
+
+const logger = Logger.get();
+
 // functions library for the tests
 // shamelessly copied from https://github.com/Meteor-Community-Packages/meteor-tabular/blob/migration/3.0/tests/reusedFunctions.js
 // see also:
@@ -13,14 +17,14 @@ export const LogResults = function(Input, ExpectedOutput, Output, test) {
 	// Make sure to open a dev tools console to view output
 	// Should only appear for errors and solves 90% of typo issues:
 	// if (test.current_fail_count > 0) {
-	// 	console.log('#'+test.test_case.name+' (Failed)');
-	// 	console.log('> Input:')
-	// 	console.log(Input);
-	// 	console.log('> ExpectedOutput:')
-	// 	console.log(ExpectedOutput)
-	// 	console.log('> Actual Output:')
-	// 	console.log(Output)
-	// 	console.log('');
+	// 	logger.log('#'+test.test_case.name+' (Failed)');
+	// 	logger.log('> Input:')
+	// 	logger.log(Input);
+	// 	logger.log('> ExpectedOutput:')
+	// 	logger.log(ExpectedOutput)
+	// 	logger.log('> Actual Output:')
+	// 	logger.log(Output)
+	// 	logger.log('');
 	// }
 }
 

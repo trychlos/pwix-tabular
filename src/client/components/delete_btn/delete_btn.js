@@ -7,9 +7,12 @@
  */
 
 import { Bootbox } from 'meteor/pwix:bootbox';
+import { Logger } from 'meteor/pwix:logger';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './delete_btn.html';
+
+const logger = Logger.get();
 
 Template.delete_btn.onCreated( function(){
     const self = this;
@@ -80,7 +83,7 @@ Template.delete_btn.events({
                     if( ret ){
                         instance.$( event.currentTarget ).trigger( 'tabular-delete-event', self );
                     } else {
-                        console.debug( 'user didn\'t confirm the deletion' );
+                        logger.debug( 'user didn\'t confirm the deletion' );
                     }
                 }
             );
