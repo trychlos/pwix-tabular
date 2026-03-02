@@ -142,17 +142,20 @@ export class Table extends alTabular.Table {
         //logger.debug( '_computeAdditionalButtons', 'after', after, 'before', before );
     }
 
-    // install a checbox to display Boolean values unless a template be already provided
-    _setCheckboxes( o ){
-        const self = this;
-        o.columns.forEach(( it ) => {
-            if( it.tmpl === 'dt_checkbox' ){
-                it.tmpl = Meteor.isClient && Template.dt_checkbox;
-            }
-            if( it.tmpl === 'dt_last_update' ){
-                it.tmpl = Meteor.isClient && Template.dt_last_update;
-            }
-        });
+    // if a template is named, make sure we install the corresponding instance (which must exist)
+    // @locus: client only
+    _setTemplatesFromStrings( o ){
+        if( Meteor.isClient ){
+            o.columns.forEach(( it ) => {
+                if( _.isString( it.tmpl )){
+                    if( Template[it.tmpl] ){
+                        it.tmpl = Template[it.tmpl];    
+                    } else {
+                        logger.warning( '_setTemplatesFromStrings() \''+it.tmmpl+'\' template not instanciated. You should instanciate it in your client code before running common initialization code.' );
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -175,7 +178,7 @@ export class Table extends alTabular.Table {
         this._computeAdditionalButtons().then(() => {
             this._addButtonsColumn( options );
             this._addSettingsButton( options );
-            this._setCheckboxes( options );
+            this._setTemplatesFromStrings( options );
         });
 
         // track the 'rendered' state
