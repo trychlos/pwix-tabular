@@ -12,7 +12,7 @@ This Meteor package is installable with the usual command:
 
 ```sh
     meteor add pwix:tabular
-    meteor npm install datatables.net-bs5 datatables.net-buttons-bs5 datatables.net-colreorder-bs5 datatables.net-fixedheader-bs5 datatables.net-responsive-bs5 datatables.net-rowgroup-bs5 datatables.net-scroller-bs5 lodash strftime --save
+    meteor npm install datatables.net-bs5 datatables.net-buttons-bs5 datatables.net-colreorder-bs5 datatables.net-fixedheader-bs5 datatables.net-plugins datatables.net-responsive-bs5 datatables.net-rowgroup-bs5 datatables.net-scroller-bs5 lodash strftime --save
 ```
 
 And to run the tests suite:

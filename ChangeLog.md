@@ -14,6 +14,7 @@
     - Use pwix:logger universal logger
     - Fix DataTables dt-container display style to be visible below dropdown menus
     - Private Table._setCheckboxes() method is renamed _setTemplatesFromStrings() and is more extensible
+    - Add datatables.net-plugins NPM dependency
 
 ### 1.6.0
 
