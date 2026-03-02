@@ -12,6 +12,7 @@
     - Rename the 'tabular' sub-object of Table constructor options to 'pwix'
     - Initialize a tests suite
     - Use pwix:logger universal logger
+    - Fix DataTables dt-container display style to be visible below dropdown menus
 
 ### 1.6.0
 

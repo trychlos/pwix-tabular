@@ -5,6 +5,13 @@
 .TabularExt {
     // happens that DataTables inside of a Tabbed panel displays scrollbars even though there is nothing to scroll to
     overflow-y: auto;
+
+    // happens that DataTables is displayed on top of dropdown menu due to dt-container position: relative
+    // as of 2026- 3- 1, izIAM is ok 
+    .dt-container {
+        position: static;
+    }
+
     .dt-container .row {
         margin-left: 0;
         margin-right: 0;
