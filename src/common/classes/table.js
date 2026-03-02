@@ -3,7 +3,6 @@
  */
 
 import _ from 'lodash';
-const assert = require( 'assert' ).strict;
 
 import { Logger } from 'meteor/pwix:logger';
 import { Mongo } from 'meteor/mongo';
@@ -120,13 +119,25 @@ export class Table extends alTabular.Table {
     async _computeAdditionalButtons(){
         let parms = this.#args && this.#args.pwix && this.#args.pwix.buttons ? this.#args.pwix.buttons : [];
         parms = ( typeof parms === 'function' ) ? await parms() : parms;
-        assert( parms && _.isArray( parms ), 'expect an array, found '+parms );
+        if( !parms || !_.isArray( parms )){
+            logger.error( '_computeAdditionalButtons() expects an array, got', parms, 'throwing...' );
+            throw new Error( 'Bad argument: parms' );
+        }
         let after = [];
         let before = [];
         parms.forEach(( it ) => {
-            assert( it && _.isObject( it ), 'expect an object, found '+it );
-            assert( it.where === Tabular.C.Where.AFTER || it.where === Tabular.C.Where.BEFORE, 'expect where is Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, found '+it.where );
-            assert( !it.buttons || _.isArray( it.buttons ), 'expect where an array of buttons definitions, found '+it.buttons );
+            if( !it || !_.isObject( it )){
+                logger.error( '_computeAdditionalButtons() expects an object, got', it, 'throwing...' );
+                throw new Error( 'Bad argument: it' );
+            }
+            if( it.where !== Tabular.C.Where.AFTER && it.where !== Tabular.C.Where.BEFORE ){
+                logger.error( '_computeAdditionalButtons() expects\'where\' be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, got', it.where, 'throwing...' );
+                throw new Error( 'Bad argument: where' );
+            }
+            if( it.buttons && !_.isArray( it.buttons )){
+                logger.error( '_computeAdditionalButtons() expects an array of button definitions, got', it.buttons, 'throwing...' );
+                throw new Error( 'Bad argument: buttons' );
+            }
             if( it.buttons ){
                 it.buttons.forEach(( btn ) => {
                     if( it.where === Tabular.C.Where.AFTER ){
@@ -201,7 +212,8 @@ export class Table extends alTabular.Table {
         } else if( where === Tabular.C.Where.BEFORE ){
             return this.#before.get();
         } else {
-            assert( false, 'expect where be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, found '+where );
+            logger.error( 'additionalButtons() expects \'where\' be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, got', where, 'throwing...' );
+            throw new Error( 'Bad argument: where' );
         }
     }
 

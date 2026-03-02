@@ -9,7 +9,6 @@
 
 import _ from 'lodash';
 import strftime from 'strftime';
-import { strict as assert } from 'node:assert';
 
 import { AccountsHub } from 'meteor/pwix:accounts-hub';
 import { Logger } from 'meteor/pwix:logger';
@@ -48,7 +47,10 @@ Template.dt_last_update.onCreated( function(){
         const id = self.APP.stamp_by.get();
         if( id ){
             const ahInstance = AccountsHub.getInstance( 'users' );
-            assert( ahInstance && ahInstance instanceof AccountsHub.ahClass, 'expects an instance of AccountsHub.ahClass, got '+ahInstance );
+            if( !ahInstance || !( ahInstance instanceof AccountsHub.ahClass )){
+                logger.error( 'expects an instance of AccountsHub.ahClass, got', ahInstance, 'throwing...' );
+                throw new Error( 'Bad argument: ahInstance' );
+            }
             ahInstance.preferredLabel( id ).then(( res ) => {
                 self.APP.author.set( res.label );
             });

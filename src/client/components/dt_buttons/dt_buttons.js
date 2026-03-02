@@ -1,6 +1,10 @@
 /*
  * pwix:tabular/src/client/components/dt_buttons/dt_buttons.js
  *
+ * Display the standard 'info', 'edit' and 'delete' buttons
+ * Maybe preceded by 'before' buttons
+ * Maybe followed by 'after' buttons
+ *
  * Data context is provided at the constructor level:
  * - item: the row data
  * - table: the Tabular.Table instance
