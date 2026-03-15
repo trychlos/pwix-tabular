@@ -1,10 +1,12 @@
 /*
  * pwix:tabular/src/client/components/delete_btn/delete_btn.js
  *
- * Data context is provided at the constructor level:
+ * Data context is provided at instanciation time:
  * - item: the row data
  * - table: the Tabular.Table instance
  */
+
+import _ from 'lodash';
 
 import { Bootbox } from 'meteor/pwix:bootbox';
 import { Logger } from 'meteor/pwix:logger';
@@ -18,36 +20,26 @@ Template.delete_btn.onCreated( function(){
     const self = this;
 
     self.PCK = {
-        item: new ReactiveVar( null ),
+        // have a deep copy of provided data context
+        dataContext: new ReactiveVar( null ),
+        // manage the UI
         enabled: new ReactiveVar( true ),
-        button_title: new ReactiveVar( '' )
+        title: new ReactiveVar( '' )
     };
-});
 
-Template.delete_btn.onRendered( function(){
-    const self = this;
-
-    // get asynchronously the item
-    self.autorun(() => {
-        const dc = Template.currentData();
-        if( dc.item && dc.table ){
-            dc.table.opt( 'deleteItem', dc.item, dc.item ).then(( res ) => { self.PCK.item.set( res ); });
-        }
-    });
-
-    // get asynchronously the enabled state
-    self.autorun(() => {
-        const dc = Template.currentData();
-        if( dc.item && dc.table ){
-            dc.table.opt( 'deleteButtonEnabled', true, dc.item ).then(( res ) => { self.PCK.enabled.set( res ); });
-        }
-    });
-
-    // get asynchronously the button title
-    self.autorun(() => {
-        const dc = Template.currentData();
-        if( dc.item && dc.table ){
-            dc.table.opt( 'deleteButtonTitle', pwixI18n.label( I18N, 'delete.btn_title', dc.item._id ), dc.item ).then(( res ) => { self.PCK.button_title.set( res ); });
+    // keep a copy of the initial data context
+    self.autorun(( comp ) => {
+        const dataContext = Template.currentData();
+        if( dataContext.item && dataContext.table ){
+            self.PCK.dataContext.set( _.cloneDeep( dataContext ));
+            // table.opt() prototype is ( name, default, row_value )
+            dataContext.table.opt( 'deleteItem', dataContext.item, dataContext.item );
+            dataContext.table.opt( 'deleteButtonEnabled', true, dataContext.item )
+                .then(( res ) => { self.PCK.enabled.set( res ); })
+            dataContext.table.opt( 'deleteButtonTitle', pwixI18n.label( I18N, 'delete.btn_title', dataContext.item._id ), dataContext.item )
+                .then(( res ) => { self.PCK.title.set( res ); });
+            // run only once
+            comp.stop();
         }
     });
 });
@@ -65,30 +57,29 @@ Template.delete_btn.helpers({
 
     // a default title
     title(){
-        return Template.instance().PCK.button_title.get();
+        return Template.instance().PCK.title.get();
     }
 });
 
 Template.delete_btn.events({
     async 'click .tabular-delete-btn button'( event, instance ){
-        const self = this;
-        const item = instance.PCK.item.get();
-        const wantConfirmation = this.table.opt( 'wantDeleteConfirmation', true, item );
+        const dataContext = instance.PCK.dataContext.get();
+        const wantConfirmation = this.table.opt( 'wantDeleteConfirmation', true, dataContext.item );
         if( wantConfirmation ){
             Bootbox.confirm({
-                title: await this.table.opt( 'deleteConfirmationTitle', pwixI18n.label( I18N, 'delete.confirm_title', item._id ), item ),
-                message: await this.table.opt( 'deleteConfirmationText', pwixI18n.label( I18N, 'delete.confirm_content', item._id ), item ),
-                mdClassesContent: await this.table.opt( 'dialogClasses', '', item )
+                title: await this.table.opt( 'deleteConfirmationTitle', pwixI18n.label( I18N, 'delete.confirm_title', dataContext.item._id ), dataContext.item ),
+                message: await this.table.opt( 'deleteConfirmationText', pwixI18n.label( I18N, 'delete.confirm_content', dataContext.item._id ), dataContext.item ),
+                mdClassesContent: await this.table.opt( 'dialogClasses', '', dataContext.item )
             }, function( ret ){
                     if( ret ){
-                        instance.$( event.currentTarget ).trigger( 'tabular-delete-event', self );
+                        instance.$( event.currentTarget ).trigger( 'tabular-delete-event', dataContext );
                     } else {
-                        logger.debug( 'user didn\'t confirm the deletion' );
+                        logger.notice( 'user didn\'t confirm the deletion' );
                     }
                 }
             );
         } else {
-            instance.$( event.currentTarget ).trigger( 'tabular-delete-event', this );
+            instance.$( event.currentTarget ).trigger( 'tabular-delete-event', dataContext );
         }
     }
 });

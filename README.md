@@ -178,6 +178,18 @@ As its `aldeed:tabular` ancestor, this package requires that the `Table` constru
 
 NB: the constructor used to use a `tabular` sub-object until v1.6 instead of the new `pwix`. This usage has since been deprecated starting with v1.7.
 
+#### Triggered events
+
+The package triggers following events:
+
+- `tabular-delete-event` with data `{ item, table }`, where `item` is the item corresponding to the displayed row,
+
+- `tabular-edit-event` with data `{ item, table }`, where `item` is the item corresponding to the displayed row,
+
+- `tabular-info-event` with data `{ item, table }`, where `item` is the item corresponding to the displayed row,
+
+- `tabular-settings-event` with data `{ item, table }`, where `item` is the item selected in the dropdown menu.
+
 ## Configuration
 
 The package's behavior can be configured through a call to the `Tabular.configure()` method, with just a single javascript object argument, which itself should only contains the options you want override.

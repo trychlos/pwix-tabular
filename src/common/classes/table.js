@@ -39,6 +39,7 @@ export class Table extends alTabular.Table {
     // private methods
 
     // add a column to the table definition if we have have additional buttons
+    // tmpContext is evaluated at button instanciation
     _addButtonsColumn( o ){
         const self = this;
         Tracker.autorun( async () => {
@@ -54,14 +55,14 @@ export class Table extends alTabular.Table {
                         };
                     }
                 });
-                //logger.debug( 'pwix:tabular addButtonsColumn', this.name, o.columns );
+                //logger.debug( 'addButtonsColumn()', this.name, o.columns );
             }
             self.#haveButtonsColumn.set( haveAnyButton );
         });
     }
 
     // add a button as the header of the extra buttons column to edit the table settings
-    // this require a) to have an extra buttons column and b) to have at least one required item to be displayted in this settings dropdown menu
+    // this require a) to have an extra buttons column and b) to have at least one required item to be displayed in this settings dropdown menu
     _addSettingsButton( o ){
         const self = this;
         Tracker.autorun( async () => {
@@ -82,7 +83,7 @@ export class Table extends alTabular.Table {
                 };
                 // take care of informing the underlying aldeed:tabular.Table options of this update
                 // rationale: aldeed:tabular.Table keeps both some individual items of the options because it uses them to handle the pagination
-                // and a 'ommitted' copy of the provided options. At this moment of the instanciation, the below line is the only way to
+                // and an 'omitted' copy of the provided options. At this moment of the instanciation, the below line is the only way to
                 // make the underlying package know that we need to insert into the DT callbacks
                 self.options.headerCallback = o.headerCallback;
             }
@@ -192,12 +193,6 @@ export class Table extends alTabular.Table {
             this._setTemplatesFromStrings( options );
         });
 
-        // track the 'rendered' state
-        Tracker.autorun(() => {
-            //logger.debug( 'rendered', this.name, this.rendered());
-            //logger.debug( 'haveButtonsColumn', this.name, this.#haveButtonsColumn.get());
-        });
-
         //logger.debug( 'instanciating', this.name, options );
         return this;
     }
@@ -228,22 +223,4 @@ export class Table extends alTabular.Table {
         res = ( res == null ) ? def : (( typeof res === 'function' ) ? await res( rowData ) : res );
         return res;
     }
-
-    /**
-     * Getter/Setter
-     * @param {Boolean} rendered
-     * @returns {Boolean} whether the associated template_ext component has been rendered
-     */
-    /*
-    rendered( rendered ){
-        if( rendered !== undefined ){
-            if( rendered === true || rendered === false ){
-                this.#rendered.set( rendered );
-            } else {
-                logger.error( 'expected a Boolean value, found', rendered );
-            }
-        }
-        return this.#rendered.get();
-    }
-        */
 };

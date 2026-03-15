@@ -16,6 +16,7 @@
     - Private Table._setCheckboxes() method is renamed _setTemplatesFromStrings() and is more extensible
     - Add datatables.net-plugins NPM dependency
     - Replace assertions par logger.error() + exception throw
+    - Take care of having a deep data context copy for each button
 
 ### 1.6.0
 

@@ -1,9 +1,11 @@
 /*
  * pwix:tabular/src/client/components/dt_settings/dt_settings.js
  *
- * Data context is provided at the constructor level:
+ * Data context is provided at instanciation time:
  * - table: the Tabular.Table instance
  */
+
+import _ from 'lodash';
 
 import { Logger } from 'meteor/pwix:logger';
 import { pwixI18n } from 'meteor/pwix:i18n';
@@ -17,6 +19,9 @@ Template.dt_settings.onCreated( function(){
     const self = this;
 
     self.PCK = {
+        // have a deep copy of provided data context
+        dataContext: new ReactiveVar( null ),
+        // the items list
         list: new ReactiveVar( [] ),
         constants: {
             COLUMN_SELECTION: {
@@ -31,27 +36,40 @@ Template.dt_settings.onCreated( function(){
         }
     };
 
+    // keep a copy of the initial data context
+    self.autorun(( comp ) => {
+        const dataContext = Template.currentData();
+        if( dataContext.table ){
+            self.PCK.dataContext.set( dataContext );
+            // run only once
+            comp.stop();
+        }
+    });
+
     // build the items list
     self.autorun(() => {
-        const table = Template.currentData().table;
-        table.opt( 'withSettingsItems' ).then(( items ) => {
-            let list = [];
-            items.every(( it ) => {
-                if( it instanceof String || typeof( it ) === 'string' ){
-                    if( Object.keys( self.PCK.constants ).includes( it )){
-                        list.push( self.PCK.constants[it] );
+        const dataContext = self.PCK.dataContext.get();
+        if( dataContext ){
+            const table = dataContext.table;
+            table.opt( 'withSettingsItems' ).then(( items ) => {
+                let list = [];
+                items.every(( it ) => {
+                    if( it instanceof String || typeof( it ) === 'string' ){
+                        if( Object.keys( self.PCK.constants ).includes( it )){
+                            list.push( self.PCK.constants[it] );
+                        } else {
+                            logger.warn( 'pwix:tabular \''+it+'\' identifier is not known' );
+                        }
+                    } else if( it.css || it.event || it.icon || it.label ){
+                        list.push( it );
                     } else {
-                        logger.warn( 'pwix:tabular \''+it+'\' identifier is not known' );
+                        logger.warn( 'pwix:tabular provided item doesn\'t seem to have any necessary informations (see AppPages::MenuItem class), got', it );
                     }
-                } else if( it.css || it.event || it.icon || it.label ){
-                    list.push( it );
-                } else {
-                    logger.warn( 'pwix:tabular provided item doesn\'t seem to have any necessary informations (see AppPages::MenuItem class), got', it );
-                }
-                return true;
+                    return true;
+                });
+                self.PCK.list.set( list );
             });
-            self.PCK.list.set( list );
-        });
+        }
     });
 });
 
@@ -91,8 +109,10 @@ Template.dt_settings.events({
     'click .dropdown-item'( event, instance ){
         const $currentTarget = instance.$( event.currentTarget );
         const data = $currentTarget.data( 'event' );
-        if( data ){
-            $currentTarget.trigger( 'tabular-settings-event', { event: data });
+        const dataContext = instance.PCK.dataContext.get();
+        if( data && dataContext ){
+            dataContext.item = data
+            $currentTarget.trigger( 'tabular-settings-event', dataContext );
         }
     }
 });
