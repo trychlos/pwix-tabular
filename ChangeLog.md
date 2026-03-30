@@ -17,6 +17,7 @@
     - Add datatables.net-plugins NPM dependency
     - Replace assertions par logger.error() + exception throw
     - Take care of having a deep data context copy for each button
+    - Rename pwix:accounts-hub dependency to pwix:accounts-core, upgrading it to 2.0.0-rc.0
 
 ### 1.6.0
 

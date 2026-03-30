@@ -10,7 +10,7 @@
 import _ from 'lodash';
 import strftime from 'strftime';
 
-import { AccountsHub } from 'meteor/pwix:accounts-hub';
+import { AccountsCore } from 'meteor/pwix:accounts-core';
 import { Logger } from 'meteor/pwix:logger';
 import { pwixI18n } from 'meteor/pwix:i18n';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -46,12 +46,7 @@ Template.dt_last_update.onCreated( function(){
     self.autorun(() => {
         const id = self.APP.stamp_by.get();
         if( id ){
-            const ahInstance = AccountsHub.getInstance( 'users' );
-            if( !ahInstance || !( ahInstance instanceof AccountsHub.ahClass )){
-                logger.error( 'expects an instance of AccountsHub.ahClass, got', ahInstance, 'throwing...' );
-                throw new Error( 'Bad argument: ahInstance' );
-            }
-            ahInstance.preferredLabel( id ).then(( res ) => {
+            AccountsCore.preferredLabel( 'users', id ).then(( res ) => {
                 self.APP.author.set( res.label );
             });
         }
