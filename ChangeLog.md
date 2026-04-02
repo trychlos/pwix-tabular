@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.7.0-rc.0
+### 1.7.0
 
-    Release date: 
+    Release date: 2026- 4- 2
 
     - configure() now warns for unmanaged keys
     - Fix tabular.less to no more show scrollbars (most probably to be reviewed when we will have more content to display)
@@ -87,4 +87,4 @@
 
 ---
 P. Wieser
-- Last updated on 2026, Feb. 9th
+- Last updated on 2026, Apr. 2nd

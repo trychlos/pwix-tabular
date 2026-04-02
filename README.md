@@ -228,13 +228,14 @@ Starting with v 1.0.0, and in accordance with advices from [the Meteor Guide](ht
 
 Instead we check npm versions of installed packages at runtime, on server startup, in development environment.
 
-Dependencies as of v 1.6.0:
+Dependencies as of v 1.7.0:
 
 ```js
     'datatables.net-bs5': '^2.0.8',
     'datatables.net-buttons-bs5': '^3.0.2',
     'datatables.net-colreorder-bs5': '^2.0.3',
     'datatables.net-fixedheader-bs5': '^4.0.1',
+    'datatables.net-plugins': '^2.3.6',
     'datatables.net-responsive-bs5': '^3.0.2',
     'datatables.net-rowgroup-bs5': '^1.5.0',
     'datatables.net-scroller-bs5': '^2.4.3',
@@ -262,4 +263,4 @@ In case of support or error, please report your issue request to our [Issues tra
 
 ---
 P. Wieser
-- Last updated on 2026, Feb. 9th
+- Last updated on 2026, Apr. 2nd
