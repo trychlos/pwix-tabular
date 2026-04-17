@@ -10,7 +10,6 @@
 import _ from 'lodash';
 import strftime from 'strftime';
 
-import { AccountsCore } from 'meteor/pwix:accounts-core';
 import { Logger } from 'meteor/pwix:logger';
 import { pwixI18n } from 'meteor/pwix:i18n';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -42,13 +41,18 @@ Template.dt_last_update.onCreated( function(){
         }
     });
 
-    // when we have a stamp_by, get the label
+    // when we have a stamp_by, get the label (if possible)
     self.autorun(() => {
         const id = self.APP.stamp_by.get();
         if( id ){
-            AccountsCore.preferredLabel( 'users', id ).then(( res ) => {
-                self.APP.author.set( res.label );
-            });
+            if( Package['pwix:accounts-core'] && Package['pwix:accounts-core'].AccountsCore ){
+                const AccountsCore = Package['pwix:accounts-core'].AccountsCore;
+                AccountsCore.preferredLabel( 'users', id ).then(( res ) => {
+                    self.APP.author.set( res.label );
+                });
+            } else {
+                self.APP.author.set( id );
+            }
         }
     });
 

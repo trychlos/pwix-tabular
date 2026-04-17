@@ -7,6 +7,7 @@
     Release date: 
 
     - Improve and document the 'dt_checkbox' component
+    - Transform pwix:accounts-core into a weak dependency, as it is only used to display the user preferred label in st_last_update component
 
 ### 1.7.0
 

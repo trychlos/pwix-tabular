@@ -29,12 +29,12 @@ function configure( api ){
         api.imply( ...arguments );
     };
     api.versionsFrom([ '2.9.0', '3.0-rc.0' ]);
+    api.use( 'pwix:accounts-core@1.2.0 || 2.0.0-rc.0', { weak: true });
     _use( 'aldeed:tabular@3.0.0-rc' );
     _use( 'check' );
     _use( 'blaze-html-templates@2.0.0 || 3.0.0-alpha300.0', 'client' );
     _use( 'ecmascript' );
     _use( 'less@4.0.0', 'client' );
-    _use( 'pwix:accounts-core@1.2.0 || 2.0.0-rc.0' );
     _use( 'pwix:bootbox@1.5.5' );
     _use( 'pwix:i18n@1.5.0' );
     _use( 'pwix:logger@1.0.0-rc' );
