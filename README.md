@@ -178,9 +178,23 @@ As its `aldeed:tabular` ancestor, this package requires that the `Table` constru
 
 NB: the constructor used to use a `tabular` sub-object until v1.6 instead of the new `pwix`. This usage has since been deprecated starting with v1.7.
 
-#### Triggered events
+### Components
+
+#### `dt_checkbox`
+
+A component to display a checkbox in the tabular view. It honors following data context:
+
+- `item`: the row data
+- `field`: the `Field.Def` definition
+- `enabled`: a Boolean, or a ReactiveVar or a function which returns a Boolean or a ReactiveVar, defaulting to true
+- `readonly`: a Boolean, or a ReactiveVar or a function which returns a Boolean or a ReactiveVar, defaulting to true
+- `onCheck`: a function called with the 'checked' prop.
+
+## Triggered events
 
 The package triggers following events:
+
+- `tabular-click-event` with data `{ item, field, checked }`, where `item` is the item corresponding to the displayed row, and `field` the relevant `Field.Def` instance,
 
 - `tabular-delete-event` with data `{ item, table }`, where `item` is the item corresponding to the displayed row,
 

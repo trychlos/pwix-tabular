@@ -12,7 +12,8 @@
 | ---: | :---       | :---                       |
 |    2 | 2024- 6-24 | whether a boolean is or not displayed as a checkbox should be a configuration option |
 |    3 | 2025- 7- 8 | translate the tabular strings |
-|    4 |  |  |
+|    4 | 2026- 4-10 | keep entries per page in local storage, advertising as non essential cookie |
+|    5 |  |  |
 
 ---
 ## Done

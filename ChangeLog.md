@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Improve and document the 'dt_checkbox' component
 
 ### 1.7.0
 
