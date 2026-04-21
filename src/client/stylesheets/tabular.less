@@ -48,3 +48,52 @@
         }
     }
 }
+
+.tabular-settings-dialog {
+    min-height: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .tabular-settings-columns-tab {
+        min-height: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        .container {
+            min-height: 0;
+        }
+
+        .list {
+            min-height: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            border: 1px solid lightgray;
+            border-radius: 0.25em;
+            padding: 0.5em;
+        }
+
+        .list .selected {
+            background-color: lightcyan;
+        }
+
+        .list .disabled {
+            color: gray;
+            font-style: italic;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .spacer {
+                height: 0.5em;
+            }
+        }
+    }
+}

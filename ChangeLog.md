@@ -2,11 +2,12 @@
 
 ## ChangeLog
 
-### 1.7.2-rc.0
+### 1.8.0-rc.0
 
     Release date: 
 
-    - 
+    - Define new Table.editTabularSettings() method
+    - Define new Tabular.getSettingsColumns() function
 
 ### 1.7.1
 

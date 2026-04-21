@@ -1,0 +1,41 @@
+<template name="settings_columns_tab">
+    <div class="tabular-settings-columns-tab">
+
+        <div class="container d-flex flex-row">
+
+            <div class="left reference list ui-w40">
+                {{#each it in referenceList }}
+                    <label class="form-label {{ itEnabled it }}">{{ itLabel it }}</label>
+                {{/each}}
+            </div>
+
+            <div class="middle actions ui-w10">
+                <button class="btn btn-sm btn-outline-secondary to-edition {{ toEditionEnabled }}">
+                    <span class="fa-solid fa-fw fa-caret-right"></span>
+                </button>
+                <div class="spacer"></div>
+                <button class="btn btn-sm btn-outline-secondary from-edition {{ fromEditionEnabled }}">
+                    <span class="fa-solid fa-fw fa-caret-left"></span>
+                </button>
+            </div>
+
+            <div class="right edition list ui-w40">
+                {{#each it in editionList }}
+                    <label class="form-label" >{{ itLabel it }}</label>
+                {{/each}}
+            </div>
+
+            <div class="order actions ui-w10">
+                <button class="btn btn-sm btn-outline-secondary to-up {{ toUpEnabled }}">
+                    <span class="fa-solid fa-fw fa-caret-up"></span>
+                </button>
+                <div class="spacer"></div>
+                <button class="btn btn-sm btn-outline-secondary to-down {{ toDownEnabled }}">
+                    <span class="fa-solid fa-fw fa-caret-down"></span>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</template>

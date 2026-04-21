@@ -1,0 +1,11 @@
+<template name="settings_dialog">
+    <div class="tabular-settings-dialog">
+
+        {{> Tabbed name="settings_dialog" }}
+
+        {{#if isModal }}
+            {{> FormsMessager (parmsMessager) }}
+        {{/if}}
+
+    </div>
+</template>

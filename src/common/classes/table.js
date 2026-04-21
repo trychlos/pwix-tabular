@@ -4,8 +4,12 @@
 
 import _ from 'lodash';
 
+import { check, Match } from 'meteor/check';
+import { Field } from 'meteor/pwix:field';
 import { Logger } from 'meteor/pwix:logger';
+import { Modal } from 'meteor/pwix:modal';
 import { Mongo } from 'meteor/mongo';
+import { pwixI18n } from 'meteor/pwix:i18n';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { default as alTabular } from 'meteor/aldeed:tabular';
 import { Tracker } from 'meteor/tracker';
@@ -209,6 +213,32 @@ export class Table extends alTabular.Table {
         } else {
             logger.error( 'additionalButtons() expects \'where\' be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, got', where, 'throwing...' );
             throw new Error( 'Bad argument: where' );
+        }
+    }
+
+    /**
+     * @locus Client
+     * @summary Edit the tabular settings
+     *  The table must be named.
+     * @param {Object} opts optional options object with following keys:
+     *  - fieldset: the Field.Set to be used as a reference when editing columns (visibility and ordering)
+     *  - $target: the jQuery element which will be the target of the terminating event
+     */
+    editTabularSettings( opts={} ){
+        if( Meteor.isClient ){
+            if( this.name ){
+                Modal.run({
+                    table: this,
+                    fieldset: opts.fieldset,    // can be undefined
+                    $target: opts.$target,      // can be undefined
+                    mdBody: 'settings_dialog',
+                    mdButtons: [ Modal.C.Button.CANCEL, Modal.C.Button.OK ],
+                    mdClasses: 'modal-md',
+                    mdTitle: pwixI18n.label( I18N, 'settings.dialog_title' )
+                });
+            } else {
+                logger.warning( 'cowardly refuse to edit the settings of an unnamed tabular' );
+            }
         }
     }
 

@@ -37,7 +37,7 @@ Template.tabular_ext.onRendered( function(){
                 //dtApi.responsive.recalc(); inoperant in the case
                 //dtApi.columns.adjust(); inoperant in the case
 
-                // eventually just try to remove the width attribute - which happens to works
+                // eventually just try to remove the width attribute - which happens to work
                 //logger.debug( 'width', $node.width());
                 $node.width( '' );
             }

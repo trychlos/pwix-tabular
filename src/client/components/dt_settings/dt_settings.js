@@ -28,11 +28,12 @@ Template.dt_settings.onCreated( function(){
                 icon: '<span class="fa-solid fa-fw fa-chevron-right ui-mr05"></span>',
                 css: 'dropdown-item d-flex align-items-center justify-content-start',
                 label(){ return pwixI18n.label( I18N, 'settings.columns_selection' ); },
-                event: 'column-selection'
+                event: Tabular.C.Items.COLUMN_SELECTION
             },
             DIVIDER: {
                 css: 'dropdown-divider'
-            }
+            },
+            TABULAR_SETTINGS: {}
         }
     };
 
@@ -84,6 +85,11 @@ Template.dt_settings.helpers({
         return it.event ? ( typeof( it.event ) === 'function' ? it.event() : it.event ) : '';
     },
 
+    // we only have a dropdown menu if more than a single option
+    haveDropdown( arg ){
+        return Template.instance().PCK.list.get().length > 1;
+    },
+
     // string translation
     i18n( arg ){
         return pwixI18n.label( I18N, arg.hash.key );
@@ -114,5 +120,15 @@ Template.dt_settings.events({
             dataContext.item = data
             $currentTarget.trigger( 'tabular-settings-event', dataContext );
         }
+    },
+
+    // if we have only one option, then no dropdown and just the button itself
+    'click .no-dropdown'( event, instance ){
+        this.table.opt( 'withSettingsItems' ).then(( items ) => {
+            const $currentTarget = instance.$( event.currentTarget );
+            const dataContext = instance.PCK.dataContext.get();
+            dataContext.item = items[0];
+            $currentTarget.trigger( 'tabular-settings-event', dataContext );
+        });
     }
 });

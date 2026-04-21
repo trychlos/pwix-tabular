@@ -168,6 +168,8 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     - `Tabular.C.Items.COLUMN_SELECTION`: let the user select displayed columns of the table
 
+    - `Tabular.C.Items.TABULAR_SETTINGS`: let the user edit tabular settings.
+
     The settings menu button is put on the header cell of the last column, which typically is the additional buttons column. It is not created if there is no button at all. When an item is chosen in this settings menu, a `tabular-settings-event` event is triggered for this item.
 
 All parameters can be provided as values, or as async functions. The provided function will be called with the row object, and must return the desired value.
@@ -190,6 +192,14 @@ A component to display a checkbox in the tabular view. It honors following data 
 - `readonly`: a Boolean, or a ReactiveVar or a function which returns a Boolean or a ReactiveVar, defaulting to true
 - `onCheck`: a function called with the 'checked' prop.
 
+#### `dt_last_update`
+
+A component to display the last update timestamp in the tabular view. It honors following data context:
+
+- `item`: the row data.
+
+If the item has already been updated, then the last update date and time and author are displayed. Else the creation date and time and author are used as a fallback.
+
 ## Triggered events
 
 The package triggers following events:
@@ -203,6 +213,8 @@ The package triggers following events:
 - `tabular-info-event` with data `{ item, table }`, where `item` is the item corresponding to the displayed row,
 
 - `tabular-settings-event` with data `{ item, table }`, where `item` is the item selected in the dropdown menu.
+
+- `tabular-settings-changed` when the settings have been modified.
 
 ## Configuration
 

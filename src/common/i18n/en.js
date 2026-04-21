@@ -6,6 +6,10 @@ Tabular.i18n = {
     ...Tabular.i18n,
     ...{
         en: {
+            cookies: {
+                columns_description: 'The selected columns to be displayed in the named tabular list.',
+                rows_description: 'The count of rows to be displayed on each pahe of the named tabular list.'
+            },
             delete: {
                 btn_title: 'Delete the "%s" object',
                 confirm_content: 'You are about to delete the "%s" object.<br />Are you sure ?',
@@ -25,7 +29,10 @@ Tabular.i18n = {
             },
             settings: {
                 columns_selection: 'Columns selection',
-                title: 'Personalize'
+                dialog_title: 'Tabular properties',
+                recording_error: 'Your settings could not be recorded. Is it possible you have refused the cookie ?',
+                recording_success: 'Your settings have been successfully recorded',
+                title: 'Personalize the tabular properties'
             }
         }
     }

@@ -21,7 +21,7 @@ const logger = Logger.get();
 Template.dt_last_update.onCreated( function(){
     const self = this;
 
-    self.APP = {
+    self.PCK = {
         author: new ReactiveVar( '' ),
         // created_at / updated_at
         stamp_at: new ReactiveVar( null ),
@@ -33,38 +33,38 @@ Template.dt_last_update.onCreated( function(){
     self.autorun(() => {
         const item = Template.currentData().item;
         if( item.updated_at && item.updated_by ){
-            self.APP.stamp_at.set( item.updatedAt );
-            self.APP.stamp_by.set( item.updatedBy );
+            self.PCK.stamp_at.set( item.updatedAt );
+            self.PCK.stamp_by.set( item.updatedBy );
         } else if( item.createdAt ){
-            self.APP.stamp_at.set( item.createdAt );
-            self.APP.stamp_by.set( item.createdBy );
+            self.PCK.stamp_at.set( item.createdAt );
+            self.PCK.stamp_by.set( item.createdBy );
         }
     });
 
     // when we have a stamp_by, get the label (if possible)
     self.autorun(() => {
-        const id = self.APP.stamp_by.get();
+        const id = self.PCK.stamp_by.get();
         if( id ){
             if( Package['pwix:accounts-core'] && Package['pwix:accounts-core'].AccountsCore ){
                 const AccountsCore = Package['pwix:accounts-core'].AccountsCore;
                 AccountsCore.preferredLabel( 'users', id ).then(( res ) => {
-                    self.APP.author.set( res.label );
+                    self.PCK.author.set( res.label );
                 });
             } else {
-                self.APP.author.set( id );
+                self.PCK.author.set( id );
             }
         }
     });
 
     // track the RVs
     self.autorun(() => {
-        //logger.debug( 'stamp_at', self.APP.stamp_at.get());
+        //logger.debug( 'stamp_at', self.PCK.stamp_at.get());
     });
     self.autorun(() => {
-        //logger.debug( 'stamp_by', self.APP.stamp_by.get());
+        //logger.debug( 'stamp_by', self.PCK.stamp_by.get());
     });
     self.autorun(() => {
-        //logger.debug( 'author', self.APP.author.get());
+        //logger.debug( 'author', self.PCK.author.get());
     });
 });
 
@@ -76,8 +76,8 @@ Template.dt_last_update.helpers({
 
     // render the last update
     last_update(){
-        const stamp = strftime( '%Y-%m-%d %H:%M:%S', Template.instance().APP.stamp_at.get());
-        const author = Template.instance().APP.author.get();
+        const stamp = strftime( '%Y-%m-%d %H:%M:%S', Template.instance().PCK.stamp_at.get());
+        const author = Template.instance().PCK.author.get();
         return pwixI18n.label( I18N, 'last_update.format', stamp, author );
     }
 });

@@ -6,7 +6,9 @@ import { Table } from '../classes/table.js';
 
 import './global.js';
 import './constants.js';
-import './i18n.js';
+//
 import './configure.js';
+import './i18n.js';
+import './functions.js';
 
 Tabular.Table = Table;

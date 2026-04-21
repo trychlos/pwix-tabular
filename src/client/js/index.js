@@ -9,6 +9,7 @@ import '../components/dt_buttons/dt_buttons.js';
 import '../components/dt_checkbox/dt_checkbox.js';
 import '../components/dt_last_update/dt_last_update.js';
 import '../components/dt_settings/dt_settings.js';
+import '../components/settings_dialog/settings_dialog.js';
 
 // before importing the class itself
 import '../../common/js/index.js';
@@ -33,5 +34,7 @@ import 'datatables.net-rowgroup-bs5/css/rowGroup.bootstrap5.min.css';
 import 'datatables.net-scroller-bs5/css/scroller.bootstrap5.min.css';
 //
 import '../stylesheets/tabular.less';
+//
+import './store.js';
 //
 alTabular.init({ DataTables });
