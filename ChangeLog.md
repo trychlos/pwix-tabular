@@ -8,6 +8,7 @@
 
     - Define new Table.editTabularSettings() method
     - Define new Tabular.getSettingsColumns() function
+    - Define new Tabular.indexMap() function
 
 ### 1.7.1
 
