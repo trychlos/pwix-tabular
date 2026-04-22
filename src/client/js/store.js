@@ -7,7 +7,6 @@
 import _ from 'lodash';
 
 import { check, Match } from 'meteor/check';
-import { CookieManager } from 'meteor/pwix:cookie-manager';
 
 Tabular._store = _.merge( Tabular._store || {}, {
     // the Cookie instances stored at startup
@@ -69,14 +68,14 @@ Meteor.startup(() => {
         Tabular._store._cookies[COOKIE_COLUMNS] = Meteor.CookieManager.publish({
             responsible: COOKIE_RESPONSIBLE,
             name: COOKIE_COLUMNS,
-            category: CookieManager.C.Category.FUNCTIONALS,
+            category: Meteor.CookieManager.C.Category.FUNCTIONALS,
             description: pwixI18n.label( I18N, 'cookies.columns_description' ),
             enabled: true
         });
         Tabular._store._cookies[COOKIE_ROWS_PER_PAGE] = Meteor.CookieManager.publish({
             responsible: COOKIE_RESPONSIBLE,
             name: COOKIE_ROWS_PER_PAGE,
-            category: CookieManager.C.Category.FUNCTIONALS,
+            category: Meteor.CookieManager.C.Category.FUNCTIONALS,
             description: pwixI18n.label( I18N, 'cookies.rows_description' ),
             enabled: true
         });

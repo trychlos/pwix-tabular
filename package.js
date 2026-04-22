@@ -36,7 +36,6 @@ function configure( api ){
     _use( 'ecmascript' );
     _use( 'less@4.0.0', 'client' );
     _use( 'pwix:bootbox@1.5.5' );
-    _use( 'pwix:cookie-manager@2.2.0' );
     _use( 'pwix:field@1.5.0' );
     _use( 'pwix:forms@1.5.0' );
     _use( 'pwix:i18n@1.5.0' );
