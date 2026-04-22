@@ -5,7 +5,6 @@
 import _ from 'lodash';
 
 import { check, Match } from 'meteor/check';
-import { Field } from 'meteor/pwix:field';
 import { Logger } from 'meteor/pwix:logger';
 import { Modal } from 'meteor/pwix:modal';
 import { Mongo } from 'meteor/mongo';
