@@ -67,6 +67,16 @@ Template.tabular_ext.onRendered( function(){
         }
     });
     */
+
+    self.autorun(() => {
+        const dc = Template.currentData();
+        if( dc.table ){
+            const $table = self.$( 'table' );
+            $table.on( 'length.dt', function( e, dtApi, length ){
+                Tabular._store.set( COOKIE_ROWS_PER_PAGE, dc.table.name, length );
+            });
+        }
+    });
 });
 
 Template.tabular_ext.helpers({

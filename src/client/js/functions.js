@@ -5,6 +5,8 @@
  * And the TabularExt template may not be yet rendered. So Have tio use initComplete() DataTable option which is also used by 'aldeed:tabular'
  */
 
+import _ from 'lodash';
+
 import { check, Match } from 'meteor/check';
 import { Logger } from 'meteor/pwix:logger';
 
@@ -45,6 +47,10 @@ Tabular.applyState = function( tabularName, dtTable ){
 
     // apply state from settings (if any)
     const _applyRowsState = function( dtTable, tabularTable ){
+        const settings = Tabular.getSettingsRows( tabularName );
+        if( settings ){
+            dtTable.page.len( parseInt( settings )).draw( false );
+        }
     };
 
     const tabularTable = Package['aldeed:tabular'].default.tablesByName[tabularName];
@@ -67,4 +73,17 @@ Tabular.getSettingsColumns = function( tabularName ){
         }
     }
     return names;
+}
+
+/**
+ * @param {String} tabularName the tabular name
+ * @returns {Array|undefined} the names to be visible on the named tabular
+ */
+Tabular.getSettingsRows = function( tabularName ){
+    check( tabularName, Match.NonEmptyString );
+    let str;
+    if( Meteor.isClient ){
+        str = Tabular._store.get( COOKIE_ROWS_PER_PAGE, tabularName );
+    }
+    return str;
 }
