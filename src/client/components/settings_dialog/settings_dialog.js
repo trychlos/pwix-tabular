@@ -5,13 +5,11 @@
  * 
  * Parms:
  * - table: the Table instance
- * - fieldset: (opt) the whole known fieldset to select the columns among
  */
 
 import _ from 'lodash';
 import { strict as assert } from 'node:assert';
 
-import { Field } from 'meteor/pwix:field';
 import { Forms } from 'meteor/pwix:forms';
 import { Logger } from 'meteor/pwix:logger';
 import { Modal } from 'meteor/pwix:modal';
@@ -41,8 +39,7 @@ Template.settings_dialog.onCreated( function(){
         // the Tabbed instance
         tabbed: new Tabbed.Instance( self, { name: 'settings_dialog' }),
         // selected columns
-        // will be set as a ReactiveVar only if a fieldset is provided in the data context
-        columns: null
+        columns: new ReactiveVar( [] )
     };
 
     // when the data context is ready
@@ -50,34 +47,28 @@ Template.settings_dialog.onCreated( function(){
         const dc = Template.currentData();
         if( dc.table ){
             Tracker.nonreactive(() => {
-                const fieldset = dc.fieldset;
                 const tabs = [];
-                if( fieldset ){
-                    check( fieldset, Field.Set );
-                    self.PCK.columns = new ReactiveVar( [] );
-                    // get the visible columns
-                    let names = Tabular.getSettingsColumns( dc.table.name );
-                    if( !names ){
-                        names = [];
-                        for( const it of dc.table.options.columns ){
-                            if( it.name && it.visible !== false ){
-                                names.push( it.name );
-                            }
+                // get the visible columns
+                let names = Tabular.getSettingsColumns( dc.table.name );
+                if( !names ){
+                    names = [];
+                    for( const it of dc.table.options.columns ){
+                        if( it.name && it.visible !== false && it.hidden !== true ){
+                            names.push( it.name );
                         }
                     }
-                    self.PCK.columns.set( names );
-                    // have a ta&b for the columns selection if a fieldset is provided
-                    tabs.push({
-                        name: 'settings_columns_tab',
-                        navLabel: pwixI18n.label( I18N, 'settings.columns_selection' ),
-                        paneTemplate: 'settings_columns_tab'
-                    });
                 }
+                self.PCK.columns.set( names );
+                // have a tab for the columns selection
+                tabs.push({
+                    name: 'settings_columns_tab',
+                    navLabel: pwixI18n.label( I18N, 'settings.columns_selection' ),
+                    paneTemplate: 'settings_columns_tab'
+                });
                 // initialize the named Tabbed
                 self.PCK.tabbed.setTabbedParms({ 
                     dataContext: {
                         table: dc.table,
-                        fieldset: dc.fieldset,
                         checker: self.PCK.checker,
                         columnsRv: self.PCK.columns
                     },
@@ -152,22 +143,18 @@ Template.settings_dialog.events({
     // submit
     //  store as a cookie (if accepted by the user) and update the tabular accordingly
     'iz-submit .tabular-settings-dialog'( event, instance ){
-        if( this.fieldset ){
-            const names = instance.PCK.columns.get();
-            const res = Tabular._store.set( COOKIE_COLUMNS, this.table.name, names.join( ',' ));
-            if( res ){
-                Tolert.success( pwixI18n.label( I18N, 'settings.recording_success' ));
-            } else {
-                Tolert.error( pwixI18n.label( I18N, 'settings.recording_error' ));
-            }
-            // close the modal
-            if( instance.PCK.isModal.get()){
-                Modal.topmost().close();
-            }
+        const names = instance.PCK.columns.get();
+        const res = Tabular._store.set( COOKIE_COLUMNS, this.table.name, names.join( ',' ));
+        if( res ){
+            Tolert.success( pwixI18n.label( I18N, 'settings.recording_success' ));
+        } else {
+            Tolert.error( pwixI18n.label( I18N, 'settings.recording_error' ));
         }
-        // rebuild the tabular
-        //  only changinf the visibility status of the columns could be dealt with directly into Datatables
-        //  but changing their order implies a re-init and so a full rebuild from the caller
+        // close the modal
+        if( instance.PCK.isModal.get()){
+            Modal.topmost().close();
+        }
+        // and advertise
         if( this.$target ){
             this.$target.trigger( 'tabular-settings-changed' );
         }

@@ -1,7 +1,11 @@
 /*
  * pwix:tabular/src/client/components/tabular_ext/tabular_ext.js
+ *
+ * Data context:
+ *  - table: the Tabular.Table instance
  */
 
+import { check, Match } from 'meteor/check';
 import { Logger } from 'meteor/pwix:logger';
 
 import './tabular_ext.html';
@@ -63,4 +67,28 @@ Template.tabular_ext.onRendered( function(){
         }
     });
     */
+});
+
+Template.tabular_ext.helpers({
+    tabularName(){
+        return this.table.name;
+    }
+});
+
+Template.tabular_ext.events({
+    // when the settings have been changed, redraw the table
+    'tabular-settings-changed .TabularExt'( event, instance ){
+        const $table = instance.$( '.TabularExt.'+this.table.name ).find( 'table.dataTable' );
+        if( $table && $table.length ){
+            const dtTable = $table.DataTable();
+            Tabular.applyState( this.table.name, dtTable );
+        }
+    },
+
+    // user has clicked on settings button
+    'tabular-settings-event .TabularExt'( event, instance, { table } ){
+        this.table.editTabularSettings({
+            $target: instance.$( event.currentTarget )
+        });
+    }
 });

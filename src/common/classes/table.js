@@ -69,14 +69,20 @@ export class Table extends alTabular.Table {
     }
 
     // add a button as the header of the extra buttons column to edit the table settings
-    // this require a) to have an extra buttons column and b) to have at least one required item to be displayed in this settings dropdown menu
+    // this require a) to have an extra buttons column and b) to have the 'withSettingsButton' true
     _addSettingsButton( o ){
         const self = this;
         Tracker.autorun( async () => {
             //logger.debug( 'pwix:tabular', self.name, o, o.headerCallback );
-            const items = await self.opt( 'withSettingsItems', [] );
+            // check for option deprecation
+            const items = await self.opt( 'withSettingsItems', null );
+            if( items ){
+                logger.warning( 'the \'withSettingsItem\' option has been deprecated in v1.8 in favor of \'withSettingsButton\'. You should update your code' );
+            }
+            // check for settings button
+            const haveSettingsButton = await self.opt( 'withSettingsButton', true );
             const haveAnyButton = self.#haveButtonsColumn.get();
-            if( items.length && haveAnyButton ){
+            if( haveSettingsButton && haveAnyButton ){
                 o.headerCallback = function( thead ){
                     const $th = $( thead ).find( 'th' );
                     if( $th.length ){
@@ -186,6 +192,23 @@ export class Table extends alTabular.Table {
         if( !options.collection ){
             options.collection = new Mongo.Collection( null );
         }
+        // do not override user initComplete() DT callback
+        const _addInitCompleteCallback = ( opts ) => {
+            const userInitComplete = opts.initComplete;
+            opts.initComplete = function(){
+                // this is a jQuery object on the table.dataTable element
+                // arguments are datatable internals
+                //logger.debug( 'this', this, arguments, opts.name );
+                //logger.debug( 'isDatatable', $.fn.dataTable.isDataTable( this[0] ));
+                if( $.fn.dataTable.isDataTable( this[0] )){
+                    const dtTable = this.DataTable();
+                    Tabular.applyState( opts.name, dtTable );
+                }
+                if( userInitComplete ) userInitComplete.apply(this, arguments);
+            };
+        };
+        // must be called before super()
+        _addInitCompleteCallback( options );
         super( options );
 
         // keep the instanciation arguments
@@ -224,7 +247,6 @@ export class Table extends alTabular.Table {
      * @summary Edit the tabular settings
      *  The table must be named.
      * @param {Object} opts optional options object with following keys:
-     *  - fieldset: the Field.Set to be used as a reference when editing columns (visibility and ordering)
      *  - $target: the jQuery element which will be the target of the terminating event
      */
     editTabularSettings( opts={} ){
@@ -232,7 +254,6 @@ export class Table extends alTabular.Table {
             if( this.name ){
                 Modal.run({
                     table: this,
-                    fieldset: opts.fieldset,    // can be undefined
                     $target: opts.$target,      // can be undefined
                     mdBody: 'settings_dialog',
                     mdButtons: [ Modal.C.Button.CANCEL, Modal.C.Button.OK ],

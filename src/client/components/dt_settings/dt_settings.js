@@ -3,6 +3,9 @@
  *
  * Data context is provided at instanciation time:
  * - table: the Tabular.Table instance
+ * 
+ * Starting with v1.8, 'withSettingsItems' option has been deprecated in favor of 'withSettingsButton'.
+ * Most of this code becomes just unused. Is nonetheless kept if the dropdown menu comes back someday.
  */
 
 import _ from 'lodash';
@@ -53,22 +56,24 @@ Template.dt_settings.onCreated( function(){
         if( dataContext ){
             const table = dataContext.table;
             table.opt( 'withSettingsItems' ).then(( items ) => {
-                let list = [];
-                items.every(( it ) => {
-                    if( it instanceof String || typeof( it ) === 'string' ){
-                        if( Object.keys( self.PCK.constants ).includes( it )){
-                            list.push( self.PCK.constants[it] );
+                if( items ){
+                    let list = [];
+                    items.every(( it ) => {
+                        if( it instanceof String || typeof( it ) === 'string' ){
+                            if( Object.keys( self.PCK.constants ).includes( it )){
+                                list.push( self.PCK.constants[it] );
+                            } else {
+                                logger.warn( 'pwix:tabular \''+it+'\' identifier is not known' );
+                            }
+                        } else if( it.css || it.event || it.icon || it.label ){
+                            list.push( it );
                         } else {
-                            logger.warn( 'pwix:tabular \''+it+'\' identifier is not known' );
+                            logger.warn( 'pwix:tabular provided item doesn\'t seem to have any necessary informations (see AppPages::MenuItem class), got', it );
                         }
-                    } else if( it.css || it.event || it.icon || it.label ){
-                        list.push( it );
-                    } else {
-                        logger.warn( 'pwix:tabular provided item doesn\'t seem to have any necessary informations (see AppPages::MenuItem class), got', it );
-                    }
-                    return true;
-                });
-                self.PCK.list.set( list );
+                        return true;
+                    });
+                    self.PCK.list.set( list );
+                }
             });
         }
     });
@@ -124,11 +129,6 @@ Template.dt_settings.events({
 
     // if we have only one option, then no dropdown and just the button itself
     'click .no-dropdown'( event, instance ){
-        this.table.opt( 'withSettingsItems' ).then(( items ) => {
-            const $currentTarget = instance.$( event.currentTarget );
-            const dataContext = instance.PCK.dataContext.get();
-            dataContext.item = items[0];
-            $currentTarget.trigger( 'tabular-settings-event', dataContext );
-        });
+       instance.$( event.currentTarget ).trigger( 'tabular-settings-event', this );
     }
 });

@@ -160,17 +160,17 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     Whether to display an 'Information' button on the right, defaulting to `true`.
 
+- `pwix.withSettingsButton`
+
+    Let the user edit tabular settings (ordering and visibility of the columns for example). The user settings are stored in local storage as a functional cookie that the user must have previously accepted.
+
+    The settings menu button is put on the header cell of the last column, which typically is the additional buttons column. It is not created if there is no button at all.
+
+    The option defaults to `true`.
+
 - `pwix.withSettingsItems`
 
-    An array of items to be displayed in the settings menu, defaulting to an empty array.
-
-    Items are expected to be either an AppPages.MenuItem (in duck-typing terms, they are expected to implement the same interface), or be a string constant among:
-
-    - `Tabular.C.Items.COLUMN_SELECTION`: let the user select displayed columns of the table
-
-    - `Tabular.C.Items.TABULAR_SETTINGS`: let the user edit tabular settings.
-
-    The settings menu button is put on the header cell of the last column, which typically is the additional buttons column. It is not created if there is no button at all. When an item is chosen in this settings menu, a `tabular-settings-event` event is triggered for this item.
+    This option is deprecated in v1.8.
 
 All parameters can be provided as values, or as async functions. The provided function will be called with the row object, and must return the desired value.
 

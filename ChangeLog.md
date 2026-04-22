@@ -9,7 +9,9 @@
     - Define new Table.editTabularSettings() method
     - Define new Tabular.getSettingsColumns() function
     - Define new Tabular.indexMap() function
-    - Define new Tabular.applyColumnsState() function
+    - Define new Tabular.applyState() function
+    - Deprecate 'withSettingsItems' instanciation option in favor of 'withSettingsButton'
+    - Internalize all settings update and apply so that all the logic is self-contained in the package
 
 ### 1.7.1
 

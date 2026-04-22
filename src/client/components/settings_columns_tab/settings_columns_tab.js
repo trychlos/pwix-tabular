@@ -3,7 +3,6 @@
  *
  * Parms:
  * - table: the Table instance
- * - fieldset: the whole known fieldset
  * - checker: a ReactiveVar which contains the parent checker
  * - columnsRv: a ReactiveVar which contains the currently visible columns as an array
  */
@@ -24,24 +23,32 @@ Template.settings_columns_tab.onCreated( function(){
     //console.debug( this );
 
     self.PCK = {
-        // the sorted names of known fieldset
+        // the sorted names of defined columns
         allNames: new ReactiveVar( null ),
         // updated on each selection/deselection the name of the column and the enclosing list
         selectedName: new ReactiveVar( null ),
         $selectedList: new ReactiveVar( null ),
 
+        // retrieve the definition of the named column
+        columnByName( name, dc ){
+            for( const column of dc.table.options.columns ){
+                if( column.name === name ){
+                    return column;
+                }
+            }
+            logger.warning( 'unable to get back the named column', name );
+            return null;
+        },
+
         // whether the named reference column can be selected
-        //  yes unless it is a hidden field, or a group
+        //  yes unless it is a hidden field, or a group (but groups have already been filtered from options.columns)
         isColumnSelectable( name, dc ){
-            const field = dc.fieldset.byName( name );
-            if( field.def().dt_hidden ){
+            const column = self.PCK.columnByName( name, dc );
+            if( !column ){
                 return false;
             }
-            const start = name+'.';
-            for( const name of self.PCK.allNames.get()){
-                if( name.startsWith( start )){
-                    return false;
-                }
+            if( column.hidden ){
+                return false;
             }
             return true;
         },
@@ -69,10 +76,16 @@ Template.settings_columns_tab.onCreated( function(){
         },
     };
 
-    // when data context is ready, setup our own rv
+    // when data context is ready, setup our reference names
     self.autorun(() => {
         const dc = Template.currentData();
-        self.PCK.allNames.set( dc.fieldset.names().sort());
+        if( dc.table ){
+            let names = [];
+            for( const column of dc.table.options.columns ){
+                names.push( column.name );
+            }
+            self.PCK.allNames.set( names.sort());
+        }
     });
 });
 
@@ -128,7 +141,7 @@ Template.settings_columns_tab.helpers({
             const name = Template.instance().PCK.selectedName.get();
             const columns = this.columnsRv.get();
             const index = columns.indexOf( name );
-            logger.debug( 'columns.length', columns.length, 'index', index );
+            //logger.debug( 'columns.length', columns.length, 'index', index );
             enabled = index < columns.length-1;
         }
         return enabled ? '' : 'disabled';
@@ -147,7 +160,7 @@ Template.settings_columns_tab.helpers({
         if( $list && $list.hasClass( 'edition' )){
             const name = Template.instance().PCK.selectedName.get();
             const index = this.columnsRv.get().indexOf( name );
-            logger.debug( 'name', name, 'index', index );
+            //logger.debug( 'name', name, 'index', index );
             enabled = index > 0;
         }
         return enabled ? '' : 'disabled';
