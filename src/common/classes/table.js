@@ -49,7 +49,10 @@ export class Table extends alTabular.Table {
         Tracker.autorun( async () => {
             const haveAnyButton = await self.opt( 'withDeleteButton', true ) || await self.opt( 'withEditButton', true ) || await self.opt( 'withInfoButton', true ) || this.#after.get().length || this.#before.get().length;
             if( haveAnyButton ){
+                const length = o.columns.length;
                 o.columns.push({
+                    name: 'dt_buttons',
+                    index: length,
                     orderable: false,
                     tmpl: Meteor.isClient && Template.dt_buttons,
                     tmplContext( rowData ){

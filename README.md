@@ -281,7 +281,19 @@ New and updated translations are willingly accepted, and more than welcome. Just
 
 ## Cookies and comparable technologies
 
-None at the moment.
+`pwix:tabular` may use `localStorage` to record some valuable data.
+
+### `pwix:tabular/tabular-columns/<tabularName>`
+
+The chosen list and order of the visible columns when displaying the named tabular list.
+
+This is considered a disableable functional _cookie_, and is advertised as such to the CookieManager if present.
+
+### `pwix:tabular/rows-per-page/<tabularName>`
+
+The chosen rows count per page when displaying the named tabular list.
+
+This is considered a disableable functional _cookie_, and is advertised as such to the CookieManager if present.
 
 ## Issues & help
 

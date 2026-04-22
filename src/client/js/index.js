@@ -35,6 +35,7 @@ import 'datatables.net-scroller-bs5/css/scroller.bootstrap5.min.css';
 //
 import '../stylesheets/tabular.less';
 //
+import './functions.js';
 import './store.js';
 //
 alTabular.init({ DataTables });
