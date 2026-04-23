@@ -16,8 +16,9 @@ const logger = Logger.get();
 Tabular.indexMap = function( columns ){
     check( columns, Array );
     let map = {};
+    let idx = 0;
     for( const it of columns ){
-        map[it.name] = it.index;
+        map[it.name] = idx++;
     }
     return map;
 }

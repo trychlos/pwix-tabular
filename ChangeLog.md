@@ -13,6 +13,7 @@
     - Deprecate 'withSettingsItems' instanciation option in favor of 'withSettingsButton'
     - Internalize all settings update and apply so that all the logic is self-contained in the package
     - Keep and restore the count of rows per page (todo #4)
+    - Install corReorder default drag-and-drop, fixing the way columns are counted
 
 ### 1.7.1
 

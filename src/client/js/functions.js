@@ -1,8 +1,10 @@
 /*
  * pwix:tabular/src/client/js/functions.js
  *
- * Note that we cannot really reluy on 'init.dt' end of DataTable initialization event as it may be triggered early enough in the process
- * And the TabularExt template may not be yet rendered. So Have tio use initComplete() DataTable option which is also used by 'aldeed:tabular'
+ * Note that we cannot really rely on 'init.dt' end of DataTable initialization event as it may be triggered early enough in the process
+ * at a moment where the TabularExt template may not yet be rendered. So prefer to use initComplete() DataTable hook.
+ * Note too that because this initComplete() hook is also used by aldeed:tabular, we require the patched version of aldeed:tabular which permit chaining.
+ * PR https://github.com/Meteor-Community-Packages/meteor-tabular/pull/471 has been submitted, not yet accepted as of 2026- 4-22.
  */
 
 import _ from 'lodash';
@@ -31,10 +33,11 @@ Tabular.applyState = function( tabularName, dtTable ){
             const otherColumns = columns.filter(( it ) => !settings.includes( it.name ));
             const order = settings.map(( name ) => indexMap[name] );
             for( const it of otherColumns ){
-                order.push( it.index );
+                order.push( indexMap[it.name] );
             }
-            dtTable.colReorder.order( order );
-            //logger.debug( 'columns', columns, 'settings', settings, 'order', order );
+            // true says that we refer to original indexes
+            dtTable.colReorder.order( order, true );
+            //logger.debug( 'reordering', tabularName, order );
             // apply visibility
             for( const it of columns ){
                 const visible = settings.includes( it.name )
@@ -77,7 +80,7 @@ Tabular.getSettingsColumns = function( tabularName ){
 
 /**
  * @param {String} tabularName the tabular name
- * @returns {Array|undefined} the names to be visible on the named tabular
+ * @returns {String|undefined} the recorded rows count as a string, which may be undefined
  */
 Tabular.getSettingsRows = function( tabularName ){
     check( tabularName, Match.NonEmptyString );

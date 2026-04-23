@@ -15,6 +15,8 @@ import { Tracker } from 'meteor/tracker';
 
 const logger = Logger.get();
 
+const debugTableName = 'UsersAccountsList';
+
 export class Table extends alTabular.Table {
 
     // static data
@@ -48,10 +50,8 @@ export class Table extends alTabular.Table {
         Tracker.autorun( async () => {
             const haveAnyButton = await self.opt( 'withDeleteButton', true ) || await self.opt( 'withEditButton', true ) || await self.opt( 'withInfoButton', true ) || this.#after.get().length || this.#before.get().length;
             if( haveAnyButton ){
-                const length = o.columns.length;
                 o.columns.push({
                     name: 'dt_buttons',
-                    index: length,
                     orderable: false,
                     tmpl: Meteor.isClient && Template.dt_buttons,
                     tmplContext( rowData ){
@@ -61,7 +61,6 @@ export class Table extends alTabular.Table {
                         };
                     }
                 });
-                //logger.debug( 'addButtonsColumn()', this.name, o.columns );
             }
             self.#haveButtonsColumn.set( haveAnyButton );
         });
@@ -69,10 +68,10 @@ export class Table extends alTabular.Table {
 
     // add a button as the header of the extra buttons column to edit the table settings
     // this require a) to have an extra buttons column and b) to have the 'withSettingsButton' true
+    // we wait for the init be completed before installing our settings button in the header
     _addSettingsButton( o ){
         const self = this;
         Tracker.autorun( async () => {
-            //logger.debug( 'pwix:tabular', self.name, o, o.headerCallback );
             // check for option deprecation
             const items = await self.opt( 'withSettingsItems', null );
             if( items ){
@@ -82,15 +81,23 @@ export class Table extends alTabular.Table {
             const haveSettingsButton = await self.opt( 'withSettingsButton', true );
             const haveAnyButton = self.#haveButtonsColumn.get();
             if( haveSettingsButton && haveAnyButton ){
-                o.headerCallback = function( thead ){
-                    const $th = $( thead ).find( 'th' );
-                    if( $th.length ){
-                        const $settingsTh = $th.eq( $th.length-1 );
-                        if( $settingsTh.data( 'dtSettingsView' )) return;
-                        $settingsTh.empty();
-                        const view = Blaze.renderWithData( Template.dt_settings, { table: self }, $settingsTh[0] );
-                        // Store the view so we can destroy it later if needed
-                        $settingsTh.data( 'dtSettingsView', view );
+                o.headerCallback = function( thead, data, start, end, display ){
+                    // 'this' is the jQuery object with holds the table.dataTable element
+                    if( this.data( 'initCompleted' )){
+                        //if( debugTableName && self.name === debugTableName ) logger.debug( 'addSettingsButtons() headerCallback', this, thead, data, start, end, display );
+                        const $th = $( thead ).find( 'th' );
+                        if( $th.length ){
+                            const idx = self.getOrder( 'dt_buttons' );
+                            if( idx >= 0 && idx < $th.length ){
+                                const $settingsTh = $th.eq( idx );
+                                if( $settingsTh.data( 'dtSettingsView' )) return;
+                                //if( debugTableName && self.name === debugTableName ) logger.debug( 'installing settings button', idx, $th.length );
+                                $settingsTh.empty();
+                                const view = Blaze.renderWithData( Template.dt_settings, { table: self }, $settingsTh[0] );
+                                // Store the view so we can destroy it later if needed
+                                $settingsTh.data( 'dtSettingsView', view );
+                            }
+                        }
                     }
                 };
                 // take care of informing the underlying aldeed:tabular.Table options of this update
@@ -128,9 +135,9 @@ export class Table extends alTabular.Table {
     }
 
     // compute additional buttons to be added to standard info/edit/delete buttons
-    //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none empty
+    //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none
     async _computeAdditionalButtons(){
-        let parms = this.#args && this.#args.pwix && this.#args.pwix.buttons ? this.#args.pwix.buttons : [];
+        let parms = await this.opt( 'buttons', [] );
         parms = ( typeof parms === 'function' ) ? await parms() : parms;
         if( !parms || !_.isArray( parms )){
             logger.error( '_computeAdditionalButtons() expects an array, got', parms, 'throwing...' );
@@ -175,7 +182,7 @@ export class Table extends alTabular.Table {
                     if( Template[it.tmpl] ){
                         it.tmpl = Template[it.tmpl];    
                     } else {
-                        logger.warning( '_setTemplatesFromStrings() \''+it.tmmpl+'\' template not instanciated. You should instanciate it in your client code before running common initialization code.' );
+                        logger.warning( '_setTemplatesFromStrings() \''+it.tmpl+'\' template not instanciated. You should instanciate it in your client code before running common initialization.' );
                     }
                 }
             });
@@ -191,24 +198,32 @@ export class Table extends alTabular.Table {
         if( !options.collection ){
             options.collection = new Mongo.Collection( null );
         }
+        // we default with ColReorder if the caller has not opt-out
+        if( !Object.keys( options ).includes( 'colReorder' )){
+            options.colReorder = true;
+        }
         // do not override user initComplete() DT callback
         const _addInitCompleteCallback = ( opts ) => {
             const userInitComplete = opts.initComplete;
             opts.initComplete = function(){
-                // this is a jQuery object on the table.dataTable element
+                // 'this' is a jQuery object on the table.dataTable element
                 // arguments are datatable internals
                 //logger.debug( 'this', this, arguments, opts.name );
                 //logger.debug( 'isDatatable', $.fn.dataTable.isDataTable( this[0] ));
                 if( $.fn.dataTable.isDataTable( this[0] )){
                     const dtTable = this.DataTable();
                     Tabular.applyState( opts.name, dtTable );
+                    this.data( 'initCompleted', true );
                 }
-                if( userInitComplete ) userInitComplete.apply(this, arguments);
+                if( userInitComplete ) userInitComplete.apply( this, arguments );
             };
         };
         // must be called before super()
         _addInitCompleteCallback( options );
+
+        // the DataTable itself is instanciated from an aldeed:tabular.template.onRendered() autorun
         super( options );
+        const self = this;
 
         // keep the instanciation arguments
         this.#args = options;
@@ -217,9 +232,9 @@ export class Table extends alTabular.Table {
         // info/edit/delete buttons are rather opt-out (default to true)
         // before and after additional buttons are opt-in (must be explicitely defined)
         this._computeAdditionalButtons().then(() => {
-            this._addButtonsColumn( options );
-            this._addSettingsButton( options );
-            this._setTemplatesFromStrings( options );
+            self._addButtonsColumn( options );
+            self._addSettingsButton( options );
+            self._setTemplatesFromStrings( options );
         });
 
         //logger.debug( 'instanciating', this.name, options );
@@ -263,6 +278,23 @@ export class Table extends alTabular.Table {
                 logger.warning( 'cowardly refuse to edit the settings of an unnamed tabular' );
             }
         }
+    }
+
+    /**
+     * @param {String} name
+     * @returns {Integer} the current order index of the named column, or -1
+     */
+    getOrder( name ){
+        const settings = Tabular.getSettingsColumns( this.name );
+        //const order = colReorder.order();
+        let idx = 0;
+        for( const col of settings ){
+            if( col === name ){
+                return idx;
+            }
+            idx += 1;
+        }
+        return -1;
     }
 
     /**
