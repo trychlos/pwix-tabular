@@ -22,6 +22,8 @@ Template.delete_btn.onCreated( function(){
     self.PCK = {
         // have a deep copy of provided data context
         dataContext: new ReactiveVar( null ),
+        // whether the 'delete' button is hidden when disabled
+        hideWhenDisabled: new ReactiveVar( Tabular.configure().hideDisabled ),
         // manage the UI
         enabled: new ReactiveVar( true ),
         title: new ReactiveVar( '' )
@@ -38,6 +40,9 @@ Template.delete_btn.onCreated( function(){
                 .then(( res ) => { self.PCK.enabled.set( res ); })
             dataContext.table.opt( 'deleteButtonTitle', pwixI18n.label( I18N, 'delete.btn_title', dataContext.item._id ), dataContext.item )
                 .then(( res ) => { self.PCK.title.set( res ); });
+            // hide when disabled ?
+            this.opt( 'hideDisabled', Tabular.configure().hideDisabled )
+                .then(( res ) => { self.PCK.hideWhenDisabled.set( res ); });
             // run only once
             comp.stop();
         }
@@ -47,7 +52,7 @@ Template.delete_btn.onCreated( function(){
 Template.delete_btn.helpers({
     // whether we show the disabled button
     enabledClass(){
-        return Template.instance().PCK.enabled.get() || !Tabular.configure().hideDisabled ? '' : 'ui-transparent';
+        return Template.instance().PCK.enabled.get() || !Template.instance().PCK.hideWhenDisabled.get() ? '' : 'ui-transparent';
     },
 
     // whether the displayed row is deletable ? defaulting to true

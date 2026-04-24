@@ -118,6 +118,12 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     Defaults to the row data object.
 
+- `pwix.hideDisabled`
+
+    Whether to hide disabled buttons instead of displaying the disabled state, defaulting to the configured option.
+
+    NB: this applies to all buttons.
+
 - `pwix.infoButtonEnabled`
 
     Whether the 'Information' button must be enabled, with a truethy or falsy value.
@@ -227,6 +233,8 @@ Known configuration options are:
     Whether to hide disabled buttons instead of displaying the disabled state.
 
     Defaults to `true`: disabled buttons are hidden.
+
+    This acts as the default for the corresponding Table instanciation option.
 
 - `verbosity`
 

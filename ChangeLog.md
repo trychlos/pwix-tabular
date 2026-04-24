@@ -7,6 +7,7 @@
     Release date: 
 
     - Define new Tabular.byName() function
+    - 'hideDisabled' configuration option becomes the default for the same Table instanciation option
 
 ### 1.8.0
 

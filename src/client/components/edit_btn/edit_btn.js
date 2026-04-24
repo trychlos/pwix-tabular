@@ -19,6 +19,8 @@ Template.edit_btn.onCreated( function(){
     self.PCK = {
         // have a deep copy of provided data context
         dataContext: new ReactiveVar( null ),
+        // whether the 'edit' button is hidden when disabled
+        hideWhenDisabled: new ReactiveVar( Tabular.configure().hideDisabled ),
         // manage the UI
         enabled: new ReactiveVar( true ),
         title: new ReactiveVar( '' )
@@ -35,6 +37,9 @@ Template.edit_btn.onCreated( function(){
                 .then(( res ) => { self.PCK.enabled.set( res ); })
             dataContext.table.opt( 'editButtonTitle', pwixI18n.label( I18N, 'edit.btn_title', dataContext.item._id ), dataContext.item )
                 .then(( res ) => { self.PCK.title.set( res ); });
+            // hide when disabled ?
+            this.opt( 'hideDisabled', Tabular.configure().hideDisabled )
+                .then(( res ) => { self.PCK.hideWhenDisabled.set( res ); });
             // run only once
             comp.stop();
         }
@@ -44,7 +49,7 @@ Template.edit_btn.onCreated( function(){
 Template.edit_btn.helpers({
     // whether to show the disabled button ?
     enabledClass(){
-        return Template.instance().PCK.enabled.get() || !Tabular.configure().hideDisabled ? '' : 'ui-transparent';
+        return Template.instance().PCK.enabled.get() || !Template.instance().PCK.hideWhenDisabled.get ? '' : 'ui-transparent';
     },
 
     // whether the displayed row is editable ? defaulting to true
