@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Define new Tabular.byName() function
 
 ### 1.8.0
 

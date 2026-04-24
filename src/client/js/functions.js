@@ -56,7 +56,7 @@ Tabular.applyState = function( tabularName, dtTable ){
         }
     };
 
-    const tabularTable = Package['aldeed:tabular'].default.tablesByName[tabularName];
+    const tabularTable = Tabular.byName( tabularName );
     //logger.debug( 'tabularName', tabularName, 'dtTable', dtTable, 'tabularTable', tabularTable );
     _applyColumnsState( dtTable, tabularTable );
     _applyRowsState( dtTable, tabularTable );

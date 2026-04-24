@@ -10,6 +10,15 @@ import { Logger } from 'meteor/pwix:logger';
 const logger = Logger.get();
 
 /**
+ * @param {String} tabularName
+ * @returns {Object} the Tabular.Table, or null
+ */
+Tabular.byName = function( tabularName ){
+    check( tabularName, Match.NonEmptyString );
+    return Package['aldeed:tabular'].default.tablesByName[tabularName];
+}
+
+/**
  * @param {Array} columns the original columns as returned by fieldset.toTabular() method
  * @returns {Object} a map of these terminal names to index
  */
