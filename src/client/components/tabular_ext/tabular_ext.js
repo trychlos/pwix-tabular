@@ -103,7 +103,7 @@ Template.tabular_ext.events({
 
     // user has clicked on settings button
     'tabular-settings-event .TabularExt'( event, instance, { table } ){
-        this.table.editTabularSettings({
+        this.table.runSettingsEditor({
             $target: instance.$( event.currentTarget )
         });
     }

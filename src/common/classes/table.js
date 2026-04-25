@@ -269,4 +269,28 @@ export class Table extends alTabular.Table {
         res = ( res == null ) ? def : (( typeof res === 'function' ) ? await res( rowData ) : res );
         return res;
     }
+
+    /**
+     * @locus Client
+     * @summary Open a modal dialog to let the user edit the tabular settings
+     *  The table must be named.
+     * @param {Object} opts optional options object with following keys:
+     *  - $target: the jQuery element which will be the target of the terminating event
+     */
+    runSettingsEditor( opts={} ){
+        if( Meteor.isClient ){
+            if( this.name ){
+                Modal.run({
+                    table: this,
+                    $target: opts.$target,      // can be undefined
+                    mdBody: 'settings_dialog',
+                    mdButtons: [ Modal.C.Button.CANCEL, Modal.C.Button.OK ],
+                    mdClasses: 'modal-md',
+                    mdTitle: pwixI18n.label( I18N, 'settings.dialog_title' )
+                });
+            } else {
+                logger.warning( 'cowardly refuse to edit the settings of an unnamed tabular' );
+            }
+        }
+    }
 };

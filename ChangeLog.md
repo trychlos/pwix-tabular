@@ -10,6 +10,7 @@
     - 'hideDisabled' configuration option becomes the default for the same Table instanciation option
     - Fix settings access when not yet recorded
     - Introduce buttons hooks, deprecating 'pwix.buttons' instanciation option
+    - editTabularSettings() intern method is renamed runSettingsEditor()
 
 ### 1.8.0
 
