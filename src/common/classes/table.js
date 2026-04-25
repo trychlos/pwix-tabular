@@ -30,8 +30,7 @@ export class Table extends alTabular.Table {
     #rendered = new ReactiveVar( false );
 
     // additional buttons
-    #after = new ReactiveVar( [] );
-    #before = new ReactiveVar( [] );
+    #buttonsHooks = new ReactiveVar( [] );
 
     // whether we have an additional buttons column
     #haveButtonsColumn = new ReactiveVar( false );
@@ -48,7 +47,7 @@ export class Table extends alTabular.Table {
     _addButtonsColumn( o ){
         const self = this;
         Tracker.autorun( async () => {
-            const haveAnyButton = await self.opt( 'withDeleteButton', true ) || await self.opt( 'withEditButton', true ) || await self.opt( 'withInfoButton', true ) || this.#after.get().length || this.#before.get().length;
+            const haveAnyButton = await self.opt( 'withDeleteButton', true ) || await self.opt( 'withEditButton', true ) || await self.opt( 'withInfoButton', true ) || self.#buttonsHooks.get().length;
             if( haveAnyButton ){
                 o.columns.push({
                     name: 'dt_buttons',
@@ -166,40 +165,10 @@ export class Table extends alTabular.Table {
     // compute additional buttons to be added to standard info/edit/delete buttons
     //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none
     async _computeAdditionalButtons(){
-        let parms = await this.opt( 'buttons', [] );
-        parms = ( typeof parms === 'function' ) ? await parms() : parms;
-        if( !parms || !_.isArray( parms )){
-            logger.error( '_computeAdditionalButtons() expects an array, got', parms, 'throwing...' );
-            throw new Error( 'Bad argument: parms' );
+        const parms = await this.opt( 'buttons', null );
+        if( parms ){
+            logger.warning( '\'pwix.buttons\' is deprecated since v1.9 in favor of \'buttonsHooks()\' method. You should update your code' );
         }
-        let after = [];
-        let before = [];
-        parms.forEach(( it ) => {
-            if( !it || !_.isObject( it )){
-                logger.error( '_computeAdditionalButtons() expects an object, got', it, 'throwing...' );
-                throw new Error( 'Bad argument: it' );
-            }
-            if( it.where !== Tabular.C.Where.AFTER && it.where !== Tabular.C.Where.BEFORE ){
-                logger.error( '_computeAdditionalButtons() expects\'where\' be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, got', it.where, 'throwing...' );
-                throw new Error( 'Bad argument: where' );
-            }
-            if( it.buttons && !_.isArray( it.buttons )){
-                logger.error( '_computeAdditionalButtons() expects an array of button definitions, got', it.buttons, 'throwing...' );
-                throw new Error( 'Bad argument: buttons' );
-            }
-            if( it.buttons ){
-                it.buttons.forEach(( btn ) => {
-                    if( it.where === Tabular.C.Where.AFTER ){
-                        after.push( btn );
-                    } else {
-                        before.push( btn );
-                    }
-                });
-            }
-        });
-        this.#after.set( after );
-        this.#before.set( before );
-        //logger.debug( '_computeAdditionalButtons', 'after', after, 'before', before );
     }
 
     // if a template is named, make sure we install the corresponding instance (which must exist)
@@ -257,56 +226,36 @@ export class Table extends alTabular.Table {
         // keep the instanciation arguments
         this.#args = options;
 
-        // add editional buttons
+        // this function is to be removed as only used to warn against deprecated pwix.buttons usage (todo #7)
+        this._computeAdditionalButtons();
+
+        // add column for additional buttons
         // info/edit/delete buttons are rather opt-out (default to true)
-        // before and after additional buttons are opt-in (must be explicitely defined)
-        this._computeAdditionalButtons().then(() => {
-            self._addButtonsColumn( options );
-            self._addSettingsButton( options );
-            self._setTemplatesFromStrings( options );
-        });
+        // other additional buttons are opt-in (must be explicitely defined via buttons hooks functions)
+        self._addButtonsColumn( options );
+        self._addSettingsButton( options );
+        self._setTemplatesFromStrings( options );
 
         //logger.debug( 'instanciating', this.name, options );
         return this;
     }
 
     /**
-     * @param {String} where whether we want Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE buttons 
-     * @returns the array of additional buttons, may be empty
+     * Getter/Setter
+     * @summary Update the buttons hooks array
+     *  NB: note that this should be used immediately after instanciation and before the tabular has a chance to be rendered in order to prevent flickering
+     * @param {Array|Function} array_or_function
+     * @returns {Array}
      */
-    additionalButtons( where ){
-        if( where === Tabular.C.Where.AFTER ){
-            return this.#after.get();
-        } else if( where === Tabular.C.Where.BEFORE ){
-            return this.#before.get();
-        } else {
-            logger.error( 'additionalButtons() expects \'where\' be Tabular.C.Where.AFTER or Tabular.C.Where.BEFORE, got', where, 'throwing...' );
-            throw new Error( 'Bad argument: where' );
-        }
-    }
-
-    /**
-     * @locus Client
-     * @summary Edit the tabular settings
-     *  The table must be named.
-     * @param {Object} opts optional options object with following keys:
-     *  - $target: the jQuery element which will be the target of the terminating event
-     */
-    editTabularSettings( opts={} ){
-        if( Meteor.isClient ){
-            if( this.name ){
-                Modal.run({
-                    table: this,
-                    $target: opts.$target,      // can be undefined
-                    mdBody: 'settings_dialog',
-                    mdButtons: [ Modal.C.Button.CANCEL, Modal.C.Button.OK ],
-                    mdClasses: 'modal-md',
-                    mdTitle: pwixI18n.label( I18N, 'settings.dialog_title' )
-                });
-            } else {
-                logger.warning( 'cowardly refuse to edit the settings of an unnamed tabular' );
+    buttonsHooks( array ){
+        if( array ){
+            check( array, Match.OneOf( [Function], Function ));
+            if( _.isFunction( array )){
+                array = [ array ];
             }
+            this.#buttonsHooks.set( array );
         }
+        return this.#buttonsHooks.get();
     }
 
     /**

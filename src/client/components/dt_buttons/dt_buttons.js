@@ -10,36 +10,58 @@
  * - table: the Tabular.Table instance
  */
 
+import { check, Match } from 'meteor/check';
+import { Logger } from 'meteor/pwix:logger';
+import { ReactiveVar } from 'meteor/reactive-var';
+import { Tracker } from 'meteor/tracker';
+
 import '../delete_btn/delete_btn.js';
 import '../edit_btn/edit_btn.js';
 import '../info_btn/info_btn.js';
 
 import './dt_buttons.html';
 
+const logger = Logger.get();
+
+Template.dt_buttons.onCreated( function(){
+    const self = this;
+
+    self.PCK = {
+        buttons: new ReactiveVar( [] )
+    };
+
+    self.autorun( async () => {
+        const dc = Template.currentData();
+        if( dc.table ){
+            check( dc.table, Tabular.Table );
+            let buttons = [];
+            const haveInfo = await dc.table.opt( 'withInfoButton', true );
+            if( haveInfo ){
+                buttons.push( 'info_btn' );
+                //self.PCK.haveInfoButton.set( haveInfo );
+            }
+            const haveEdit = await dc.table.opt( 'withEditButton', true );
+            if( haveEdit ){
+                buttons.push( 'edit_btn' );
+                //self.PCK.haveEditButton.set( haveEdit );
+            }
+            const haveDelete = await dc.table.opt( 'withDeleteButton', true );
+            if( haveDelete ){
+                buttons.push( 'delete_btn' );
+                //self.PCK.haveDeleteButton.set( haveDelete );
+            }
+            const array = dc.table.buttonsHooks();
+            for( const fn of array ){
+                buttons = await fn( dc.table, buttons );
+            }
+            self.PCK.buttons.set( buttons );
+        }
+    });
+});
+
 Template.dt_buttons.helpers({
-
-    // list of buttons after the standards
-    afterButtons(){
-        return this.table.additionalButtons( Tabular.C.Where.AFTER, this.item );
-    },
-
-    // list of buttons before the standards
-    beforeButtons(){
-        return this.table.additionalButtons( Tabular.C.Where.BEFORE, this.item );
-    },
-
-    // whether have a delete button ?
-    haveDeleteButton(){
-        return this.table.opt( 'withDeleteButton', true );
-    },
-
-    // whether have an edit button ?
-    haveEditButton(){
-        return this.table.opt( 'withEditButton', true );
-    },
-
-    // whether have an info button ?
-    haveInfoButton(){
-        return this.table.opt( 'withInfoButton', true );
+    // the list of buttons
+    buttons(){
+        return Template.instance().PCK.buttons.get();
     }
 });

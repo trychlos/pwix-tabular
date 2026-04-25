@@ -2,13 +2,14 @@
 
 ## ChangeLog
 
-### 1.8.1-rc.0
+### 1.9.0-rc.0
 
     Release date: 
 
     - Define new Tabular.byName() function
     - 'hideDisabled' configuration option becomes the default for the same Table instanciation option
     - Fix settings access when not yet recorded
+    - Introduce buttons hooks, deprecating 'pwix.buttons' instanciation option
 
 ### 1.8.0
 

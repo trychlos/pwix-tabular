@@ -64,6 +64,16 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
     
     - `buttons`: an array of Blaze template names to be added at the place.
 
+    This option is deprecated starting with v1.9 in favor of `pwix.buttonsHook`.
+
+- `pwix.buttonsHooks`
+
+    An array of functions which will receive the current buttons array, and must return the new buttons array, defaulting to `[]`.
+
+    Prototype is `async fn( table<Tabular.Table>, buttons<Array> ): <Array>`
+
+    This option is introduced in v1.9.
+
 - `pwix.deleteConfirmationText`
 
     The text to be displayed when requiring the user confirmation, as a HTML string.
