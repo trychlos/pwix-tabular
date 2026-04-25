@@ -38,7 +38,7 @@ Template.info_btn.onCreated( function(){
             dataContext.table.opt( 'infoButtonTitle', pwixI18n.label( I18N, 'info.btn_title', dataContext.item._id ), dataContext.item )
                 .then(( res ) => { self.PCK.title.set( res ); });
             // hide when disabled ?
-            this.opt( 'hideDisabled', Tabular.configure().hideDisabled )
+            dataContext.table.opt( 'hideDisabled', Tabular.configure().hideDisabled )
                 .then(( res ) => { self.PCK.hideWhenDisabled.set( res ); });
             // run only once
             comp.stop();

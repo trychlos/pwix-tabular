@@ -15,7 +15,7 @@ import { Tracker } from 'meteor/tracker';
 
 const logger = Logger.get();
 
-const debugTableName = 'UsersAccountsList';
+const debugTableName = '';
 
 export class Table extends alTabular.Table {
 
@@ -84,12 +84,17 @@ export class Table extends alTabular.Table {
                 o.headerCallback = function( thead, data, start, end, display ){
                     // 'this' is the jQuery object with holds the table.dataTable element
                     if( this.data( 'initCompleted' )){
-                        //if( debugTableName && self.name === debugTableName ) logger.debug( 'addSettingsButtons() headerCallback', this, thead, data, start, end, display );
+                        if( debugTableName && self.name === debugTableName ) logger.debug( 'addSettingsButtons() headerCallback', this, thead, data, start, end, display );
                         const $th = $( thead ).find( 'th' );
                         if( $th.length ){
-                            const idx = self.getOrder( 'dt_buttons' );
-                            if( idx >= 0 && idx < $th.length ){
-                                const $settingsTh = $th.eq( idx );
+                            const result = self._getOrder( 'dt_buttons' );
+                            if( debugTableName && self.name === debugTableName ) logger.debug( 'dt_buttons', result, $th.length );
+                            // if the order is not recorded in settings, then consider we address the last column
+                            if( !result.haveSettings ){
+                                result.index = $th.length - 1;
+                            }
+                            if( result.index >= 0 && result.index < $th.length ){
+                                const $settingsTh = $th.eq( result.index );
                                 if( $settingsTh.data( 'dtSettingsView' )) return;
                                 //if( debugTableName && self.name === debugTableName ) logger.debug( 'installing settings button', idx, $th.length );
                                 $settingsTh.empty();
@@ -107,6 +112,30 @@ export class Table extends alTabular.Table {
                 self.options.headerCallback = o.headerCallback;
             }
         });
+    }
+
+    /*
+     * @param {String} name
+     * @returns {Object} an object with following keys:
+     *  - hasSettings: whether we have found a settings string
+     *  - index: whether we have found the serached name, or -1
+     */
+    _getOrder( name ){
+        const self = this;
+        const settings = Tabular.getSettingsColumns( this.name );
+        const haveSettings = Boolean( settings );
+        if( debugTableName && self.name === debugTableName ) logger.debug( 'haveSettings', haveSettings, 'settings', settings );
+        if( haveSettings ){
+            //const order = colReorder.order();
+            let index = 0;
+            for( const col of settings ){
+                if( col === name ){
+                    return { haveSettings, index };
+                }
+                index += 1;
+            }
+        }
+        return { haveSettings, index: -1 };
     }
 
     /*
@@ -278,23 +307,6 @@ export class Table extends alTabular.Table {
                 logger.warning( 'cowardly refuse to edit the settings of an unnamed tabular' );
             }
         }
-    }
-
-    /**
-     * @param {String} name
-     * @returns {Integer} the current order index of the named column, or -1
-     */
-    getOrder( name ){
-        const settings = Tabular.getSettingsColumns( this.name );
-        //const order = colReorder.order();
-        let idx = 0;
-        for( const col of settings ){
-            if( col === name ){
-                return idx;
-            }
-            idx += 1;
-        }
-        return -1;
     }
 
     /**

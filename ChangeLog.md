@@ -8,6 +8,7 @@
 
     - Define new Tabular.byName() function
     - 'hideDisabled' configuration option becomes the default for the same Table instanciation option
+    - Fix settings access when not yet recorded
 
 ### 1.8.0
 
