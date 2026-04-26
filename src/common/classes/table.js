@@ -113,6 +113,15 @@ export class Table extends alTabular.Table {
         });
     }
 
+    // compute additional buttons to be added to standard info/edit/delete buttons
+    //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none
+    async _computeAdditionalButtons(){
+        const parms = await this.opt( 'buttons', null );
+        if( parms ){
+            logger.warning( '\'pwix.buttons\' is deprecated since v1.9 in favor of \'buttonsHooks()\' method. You should update your code' );
+        }
+    }
+
     /*
      * @param {String} name
      * @returns {Object} an object with following keys:
@@ -141,7 +150,7 @@ export class Table extends alTabular.Table {
      * @param {String} name
      * @returns the content of the instanciation argument, which may be null
      */
-    _arg( name ){
+    _opt( name ){
         let res = null;
         if( this.#args ){
             if( this.#args.pwix ){
@@ -151,7 +160,7 @@ export class Table extends alTabular.Table {
             }
             if( this.#args.tabular ){
                 if( !this.#tabularWarned ){
-                    logger.warn( 'Table._arg() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations to use \'pwix\' instead' );
+                    logger.warn( 'Table._opt() the \'tabular\' sub-object has been deprecated since v1.7. You should update your code and/or your configurations to use \'pwix\' instead' );
                     this.#tabularWarned = true;
                 }
                 if( !res && Object.keys( this.#args.tabular).includes( name )){
@@ -160,15 +169,6 @@ export class Table extends alTabular.Table {
             }
         }
         return res;
-    }
-
-    // compute additional buttons to be added to standard info/edit/delete buttons
-    //  from the instanciation args, create an insert before and an append after lists, maybe both or one or none
-    async _computeAdditionalButtons(){
-        const parms = await this.opt( 'buttons', null );
-        if( parms ){
-            logger.warning( '\'pwix.buttons\' is deprecated since v1.9 in favor of \'buttonsHooks()\' method. You should update your code' );
-        }
     }
 
     // if a template is named, make sure we install the corresponding instance (which must exist)
@@ -236,7 +236,7 @@ export class Table extends alTabular.Table {
         self._addSettingsButton( options );
         self._setTemplatesFromStrings( options );
 
-        //logger.debug( 'instanciating', this.name, options );
+        //logger.debug( 'instanciating', this.name );
         return this;
     }
 
@@ -245,15 +245,19 @@ export class Table extends alTabular.Table {
      * @summary Update the buttons hooks array
      *  NB: note that this should be used immediately after instanciation and before the tabular has a chance to be rendered in order to prevent flickering
      * @param {Array|Function} array_or_function
+     *  NB: a function is pushed into the hooks array, while an array just replaces it
      * @returns {Array}
      */
-    buttonsHooks( array ){
-        if( array ){
-            check( array, Match.OneOf( [Function], Function ));
-            if( _.isFunction( array )){
-                array = [ array ];
+    buttonsHooks( array_or_function ){
+        if( array_or_function ){
+            check( array_or_function, Match.OneOf( [Function], Function ));
+            let hooks = this.#buttonsHooks.get() || [];
+            if( _.isFunction( array_or_function )){
+                hooks.push( array_or_function );
+            } else {
+                hooks = array_or_function;
             }
-            this.#buttonsHooks.set( array );
+            this.#buttonsHooks.set( hooks );
         }
         return this.#buttonsHooks.get();
     }
@@ -265,7 +269,7 @@ export class Table extends alTabular.Table {
      * @returns the value, or the value returned by the function, or the default value
      */
     async opt( name, def, rowData ){
-        let res = this._arg( name );
+        let res = this._opt( name );
         res = ( res == null ) ? def : (( typeof res === 'function' ) ? await res( rowData ) : res );
         return res;
     }

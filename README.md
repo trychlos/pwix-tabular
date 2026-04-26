@@ -66,13 +66,9 @@ The constructor accepts all `aldeed:tabular` `Tabular.Table` own options, plus f
 
     This option is deprecated starting with v1.9 in favor of `pwix.buttonsHook`.
 
-- `pwix.buttonsHooks`
+- `pwix.colReorder`
 
-    An array of functions which will receive the current buttons array, and must return the new buttons array, defaulting to `[]`.
-
-    Prototype is `async fn( table<Tabular.Table>, buttons<Array> ): <Array>`
-
-    This option is introduced in v1.9.
+    Whether we want allow the columns reordering, defaulting to `true`.
 
 - `pwix.deleteConfirmationText`
 
@@ -195,6 +191,12 @@ Please note that buttons are managed inside of autorun functions. So the package
 As its `aldeed:tabular` ancestor, this package requires that the `Table` constructor be called in same terms, both in client and server side.
 
 NB: the constructor used to use a `tabular` sub-object until v1.6 instead of the new `pwix`. This usage has since been deprecated starting with v1.7.
+
+- `buttonsHooks( fn|array )`
+
+    A Tabular.Table method which let the caller get and set the buttons hooks.
+
+    Each buttons hook is a `async fn( table, buttons ): <Array>` function.
 
 ### Components
 

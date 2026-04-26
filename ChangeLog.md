@@ -11,6 +11,7 @@
     - Fix settings access when not yet recorded
     - Introduce buttons hooks, deprecating 'pwix.buttons' instanciation option
     - editTabularSettings() intern method is renamed runSettingsEditor()
+    - _arg() private method is renamed _opt()
 
 ### 1.8.0
 
