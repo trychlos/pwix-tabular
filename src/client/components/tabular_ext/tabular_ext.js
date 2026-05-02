@@ -75,7 +75,7 @@ Template.tabular_ext.onRendered( function(){
             // details.order: current column order
             // details.mapping: array of integers that define how the old column positions map to the new positions
             $table.on( 'columns-reordered.dt', function( e, details ){
-                logger.debug( arguments );
+                //logger.debug( arguments );
             });
             // length: new rows count per page
             $table.on( 'length.dt', function( e, dtApi, length ){
