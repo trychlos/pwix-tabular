@@ -16,8 +16,8 @@
 |    5 | 2026- 4-22 | withSettingsItems is deprecated in v1.8 - have to remove it some day |
 |    6 | 2026- 4-22 | keep in local storage sorted columns and sort order |
 |    7 | 2026- 4-25 | pwix.buttons is deprecated in v1.9 - have to remove it and _computeAdditionalButtons() some day |
-|    8 | 2026- 4-27 | when selecting visible columns, it is not easy to associate the name with the seen title - prefer use the title if present |
-|    9 |  |  |
+|    9 | 2026- 5- 5 | stylesheet is bad when there is many columns and needs a redimensioning to be active |
+|   10 |  |  |
 
 ---
 ## Done
@@ -28,6 +28,8 @@
 |      | 2024- 7- 5 | this is a Table instanciation parameter - cancelled |
 |    4 | 2026- 4-10 | keep entries per page in local storage, advertising as non essential cookie |
 |      | 2026- 4-22 | done |
+|    8 | 2026- 4-27 | when selecting visible columns, it is not easy to associate the name with the seen title - prefer use the title if present |
+|      | 2026- 5- 5 | done |
 
 ---
 P. Wieser

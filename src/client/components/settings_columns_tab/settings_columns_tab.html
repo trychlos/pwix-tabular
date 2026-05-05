@@ -5,7 +5,7 @@
 
             <div class="left reference list ui-w40">
                 {{#each it in referenceList }}
-                    <label class="form-label {{ itEnabled it }}">{{ itLabel it }}</label>
+                    <label class="form-label {{ itEnabled it }}" data-name="{{ it }}">{{ itLabel it }}</label>
                 {{/each}}
             </div>
 
@@ -21,7 +21,7 @@
 
             <div class="right edition list ui-w40">
                 {{#each it in editionList }}
-                    <label class="form-label" >{{ itLabel it }}</label>
+                    <label class="form-label" data-name="{{ it }}">{{ itLabel it }}</label>
                 {{/each}}
             </div>
 

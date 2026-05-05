@@ -64,7 +64,7 @@ Template.settings_columns_tab.onCreated( function(){
             let $list = null;
             const $selected = self.$( '.tabular-settings-columns-tab' ).find( '.form-label.selected' );
             if( $selected && $selected.length ){
-                name = $selected.text();
+                name = $selected.data( 'name' );
                 $list = $selected.closest( '.list' );
                 if( $list && !$list.length ){
                     logger.warning( 'unable to find the hosting list for selected', $selected );
@@ -125,7 +125,8 @@ Template.settings_columns_tab.helpers({
 
     // return the item label - which happens to be the column name
     itLabel( it ){
-        return it;
+        const column = Template.instance().PCK.columnByName( it, this );
+        return column && column.title ? column.title : it;
     },
 
     // return the list of the known columns

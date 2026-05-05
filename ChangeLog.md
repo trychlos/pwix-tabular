@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Use column title if possible when selecting displayed columns (todo #8)
 
 ### 1.9.0
 
