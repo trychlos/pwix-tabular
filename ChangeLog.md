@@ -7,6 +7,7 @@
     Release date: 
 
     - Use column title if possible when selecting displayed columns (todo #8)
+    - Remove unused messager
 
 ### 1.9.0
 
