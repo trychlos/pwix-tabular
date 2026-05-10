@@ -15,8 +15,9 @@
 |    3 | 2025- 7- 8 | translate the tabular strings |
 |    5 | 2026- 4-22 | withSettingsItems is deprecated in v1.8 - have to remove it some day |
 |    6 | 2026- 4-22 | keep in local storage sorted columns and sort order |
-|    7 | 2026- 4-25 | pwix.buttons is deprecated in v1.9 - have to remove it and _computeAdditionalButtons() some day |
-|   10 |  |  |
+|    7 | 2026- 4-25 | pwix.buttons is deprecated in v1.9 - have to remove it and computeAdditionalButtons() some day |
+|   10 | 2026- 5- 7 | prevent colReorder alert dialog when column count mismatch |
+|   11 |  |  |
 
 ---
 ## Done
