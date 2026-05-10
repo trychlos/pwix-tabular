@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.9.1-rc.0
+### 1.9.1
 
-    Release date: 
+    Release date: 2026- 5-10
 
     - Use column title if possible when selecting displayed columns (todo #8)
     - Remove unused messager
@@ -125,4 +125,4 @@
 
 ---
 P. Wieser
-- Last updated on 2026, May. 2nd
+- Last updated on 2026, May. 10th
